@@ -15,13 +15,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import useFormStore from '@/lib/store';
+import { FormData, periods } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-const periods = ['daily', 'weekly', '2xMonthly', 'monthly'] as const;
-const durationSteps = [6, 12, 18, 24, 36, 48, 60] as const;
-
 const calculatorFormSchema = z.object({
   initialInvestment: z.number(),
   regularInvestment: z.number().min(1, {
@@ -35,30 +34,40 @@ const calculatorFormSchema = z.object({
 });
 
 const CalculatorForm = () => {
-  // 1. Define your form.
+  const { formData, updateFormData } = useFormStore();
+  const isUpdatingFromStore = useRef(false);
+
   const form = useForm<z.infer<typeof calculatorFormSchema>>({
     resolver: zodResolver(calculatorFormSchema),
-    defaultValues: {
-      initialInvestment: 1000,
-      regularInvestment: 100,
-      period: 'weekly',
-      durationMonths: 3,
-      priceTarget: 100,
-      volatility: 0,
-      whatIf: 0,
-    },
+    defaultValues: formData,
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof calculatorFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  // This will run when form values change through user interaction
+  useEffect(() => {
+    // Setup subscription to form changes
+    const subscription = form.watch((value, { type }) => {
+      // Only update store when changes are from user input, not from store sync
+      if (!isUpdatingFromStore.current && type === 'change') {
+        updateFormData(value as FormData);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => subscription.unsubscribe();
+  }, [form, updateFormData]);
+
+  // Sync from store to form when store changes externally
+  useEffect(() => {
+    if (formData && Object.keys(formData).length > 0) {
+      isUpdatingFromStore.current = true;
+      form.reset(formData);
+      isUpdatingFromStore.current = false;
+    }
+  }, [formData, form]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8">
         <FormField
           control={form.control}
           name="initialInvestment"
@@ -66,7 +75,13 @@ const CalculatorForm = () => {
             <FormItem>
               <FormLabel>Initial Investment</FormLabel>
               <FormControl>
-                <Input placeholder="upfront investment" {...field} />
+                <Input
+                  placeholder="upfront investment"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(parseFloat(e.target.value) || 0);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,7 +94,13 @@ const CalculatorForm = () => {
             <FormItem>
               <FormLabel>Regular Investment</FormLabel>
               <FormControl>
-                <Input placeholder="regular investment" {...field} />
+                <Input
+                  placeholder="regular investment"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(parseFloat(e.target.value) || 0);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,7 +130,13 @@ const CalculatorForm = () => {
             <FormItem>
               <FormLabel>Price Target</FormLabel>
               <FormControl>
-                <Input placeholder="price target" {...field} />
+                <Input
+                  placeholder="price target"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(parseFloat(e.target.value) || 0);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -126,7 +153,9 @@ const CalculatorForm = () => {
                 max={6}
                 step={1}
                 value={[field.value]}
-                onValueChange={field.onChange}
+                onValueChange={(values) => {
+                  field.onChange(values[0]);
+                }}
               />
               <div className="mt-2 grid w-full grid-cols-3">
                 <span className="text-left text-sm">6 months</span>
