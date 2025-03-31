@@ -1,6 +1,6 @@
-import Form from "@/features/form";
+import CalculatorForm from "@/features/CalculatorForm";
+import Chart from "@/features/ProjectionChart";
 import Summary from "@/features/summary";
-import Chart from "@/features/chart";
 
 interface AppLayoutProps {}
 
@@ -13,11 +13,11 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
       </header>
       {/* Main */}
       <div className="px-4 sm:px-6 lg:px-8 py-6 mx-auto max-w-7xl">
-        <div className="flex flex-col md:flex-row md:gap-6">
-          <div className="w-full md:w-3/10 mb-6 md:mb-0 bg-white rounded-lg p-4 shadow-md">
-            <Form />
+        <div className="flex flex-col md:flex-row md:gap-4">
+          <div className="w-full md:w-5/10 mb-6 md:mb-0 bg-white rounded-lg p-4 shadow-md">
+            <CalculatorForm />
           </div>
-          <div className="w-full md:w-7/10 bg-white rounded-lg p-4 shadow-md">
+          <div className="w-full md:w-5/10 bg-white rounded-lg p-4 shadow-md">
             <Chart />
             <Summary />
           </div>

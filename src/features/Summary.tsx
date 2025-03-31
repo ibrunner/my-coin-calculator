@@ -1,8 +1,8 @@
-interface SummaryProps {
-  // Add your props here
-}
+// interface SummaryProps {
+//   // Add your props here
+// }
 
-const Summary: React.FC<SummaryProps> = () => {
+const Summary = () => {
   return <div>Summary</div>;
 };
 
