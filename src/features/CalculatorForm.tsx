@@ -128,10 +128,10 @@ const CalculatorForm = () => {
                 value={[field.value]}
                 onValueChange={field.onChange}
               />
-              <div className="flex justify-between px-1">
-                <span className="text-sm">6 months</span>
-                <span className="text-sm">24 months</span>
-                <span className="text-sm">5 years</span>
+              <div className="mt-2 grid w-full grid-cols-3">
+                <span className="text-left text-sm">6 months</span>
+                <span className="text-center text-sm">24 months</span>
+                <span className="text-right text-sm">5 years</span>
               </div>
             </FormItem>
           )}
@@ -149,10 +149,10 @@ const CalculatorForm = () => {
                 value={[field.value]}
                 onValueChange={field.onChange}
               />
-              <div className="flex justify-between px-1">
-                <span className="text-sm">None</span>
-                <span className="text-sm">Medium</span>
-                <span className="text-sm">First Time?</span>
+              <div className="mt-2 grid w-full grid-cols-3">
+                <span className="text-left text-sm">None</span>
+                <span className="text-center text-sm">Medium</span>
+                <span className="text-right text-sm">First Time?</span>
               </div>
             </FormItem>
           )}
@@ -171,12 +171,27 @@ const CalculatorForm = () => {
                 value={[field.value]}
                 onValueChange={field.onChange}
               />
-              <div className="flex justify-between px-1">
-                <span className="text-sm">📈</span>
-                <span className="text-sm">🐻</span>
-                <span className="text-sm">🦀</span>
-                <span className="text-sm">💎</span>
-                <span className="text-sm">🚀</span>
+              <div className="relative mt-2 h-6 w-full px-2">
+                <div className="absolute left-0 -translate-x-0 transform text-sm">
+                  📈
+                </div>
+                <div className="absolute left-[calc(25%+4px)] -translate-x-1/2 transform text-sm">
+                  🐻
+                </div>
+                <div className="absolute left-1/2 -translate-x-1/2 transform text-sm">
+                  🦀
+                </div>
+                <div className="absolute left-[calc(75%-4px)] -translate-x-1/2 transform text-sm">
+                  💎
+                </div>
+                <div className="absolute right-0 translate-x-0 transform text-sm">
+                  🚀
+                </div>
+                {/* <span className="text-left text-sm">📈</span>
+                <span className="text-center text-sm">🐻</span>
+                <span className="text-center text-sm">🦀</span>
+                <span className="text-center text-sm">💎</span>
+                <span className="text-right text-sm">🚀</span> */}
               </div>
             </FormItem>
           )}

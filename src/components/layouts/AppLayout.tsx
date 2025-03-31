@@ -14,10 +14,10 @@ const AppLayout: React.FC<AppLayoutProps> = () => {
       {/* Main */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:gap-4">
-          <div className="md:w-5/10 mb-6 w-full rounded-lg bg-white p-4 shadow-md md:mb-0">
+          <div className="md:w-5/10 mb-2 w-full rounded-lg bg-white p-4 shadow-md md:mb-0">
             <CalculatorForm />
           </div>
-          <div className="md:w-5/10 w-full rounded-lg bg-white p-4 shadow-md">
+          <div className="md:w-5/10 w-full">
             <Chart />
             <Summary />
           </div>
