@@ -4,7 +4,7 @@
   
   <!-- Header -->
   <rect x="0" y="0" width="1280" height="70" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
-  <text x="40" y="45" font-family="Arial" font-size="26" font-weight="bold" fill="#1e293b">DCAce</text>
+  <text x="40" y="45" font-family="Arial" font-size="26" font-weight="bold" fill="#1e293b">MyCoinCalculator</text>
   
   <!-- Navigation Links -->
   <text x="700" y="45" font-family="Arial" font-size="16" fill="#64748b">Home</text>
