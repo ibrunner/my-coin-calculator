@@ -27,7 +27,7 @@ const calculatorFormSchema = z.object({
     message: 'Regular investment must be greater than 0',
   }),
   period: z.enum(periods),
-  durationMonths: z.number().min(0).max(6),
+  durationMonthsSlider: z.number().min(6).max(60),
   priceTarget: z.number(),
   volatility: z.number().min(0).max(4),
   whatIf: z.number().min(0).max(4),
@@ -144,7 +144,7 @@ const CalculatorForm = () => {
         />
         <FormField
           control={form.control}
-          name="durationMonths"
+          name="durationMonthsSlider"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Duration</FormLabel>
@@ -216,11 +216,6 @@ const CalculatorForm = () => {
                 <div className="absolute right-0 translate-x-0 transform text-sm">
                   🚀
                 </div>
-                {/* <span className="text-left text-sm">📈</span>
-                <span className="text-center text-sm">🐻</span>
-                <span className="text-center text-sm">🦀</span>
-                <span className="text-center text-sm">💎</span>
-                <span className="text-right text-sm">🚀</span> */}
               </div>
             </FormItem>
           )}

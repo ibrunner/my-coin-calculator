@@ -1,11 +1,11 @@
 import { create } from 'zustand';
-import { FormData } from './types';
+import { DurationStep, FormData, durationSteps } from './types';
 
 const DEFAULT_FORM_DATA: FormData = {
   initialInvestment: 1000,
   regularInvestment: 100,
   period: 'monthly',
-  durationMonths: 24,
+  durationMonthsSlider: 3,
   priceTarget: 100000,
   startPrice: 60000,
   volatility: 0,
@@ -15,11 +15,10 @@ const DEFAULT_FORM_DATA: FormData = {
 const calculatePorfolioValue = (
   formData: FormData
 ): { totalInvestment: number; estimatedValue: number; profit: number } => {
-  console.log('calculatePorfolioValue', formData);
   const {
     initialInvestment,
     regularInvestment,
-    durationMonths,
+    durationMonthsSlider,
     priceTarget,
     startPrice,
     period,
@@ -39,8 +38,8 @@ const calculatePorfolioValue = (
     default:
       payPeriodsPerMonth = 1;
   }
-  console.log('period', period);
-  console.log('payPeriodsPerMonth', payPeriodsPerMonth);
+
+  const durationMonths = durationSteps[durationMonthsSlider];
 
   const totalInvestment =
     initialInvestment +
@@ -62,12 +61,14 @@ const calculatePorfolioValue = (
 
 const DEFAULT_STORE_DATA: Omit<FormStore, 'updateFormData' | 'updateField'> = {
   formData: DEFAULT_FORM_DATA,
+  durationMonths: durationSteps[DEFAULT_FORM_DATA.durationMonthsSlider],
   ...calculatePorfolioValue(DEFAULT_FORM_DATA),
 };
 
 interface FormStore {
   formData: FormData;
   updateFormData: (formData: FormData) => void;
+  durationMonths: DurationStep;
   totalInvestment: number;
   estimatedValue: number;
   profit: number;
@@ -76,7 +77,11 @@ interface FormStore {
 const useFormStore = create<FormStore>((set) => ({
   ...DEFAULT_STORE_DATA,
   updateFormData: (formData: FormData) => {
-    set({ formData, ...calculatePorfolioValue(formData) });
+    set({
+      formData,
+      ...calculatePorfolioValue(formData),
+      durationMonths: durationSteps[formData.durationMonthsSlider],
+    });
   },
 }));
 

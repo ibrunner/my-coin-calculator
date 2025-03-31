@@ -14,7 +14,7 @@ export type FormData = {
   initialInvestment: number;
   regularInvestment: number;
   period: PeriodStep;
-  durationMonths: number;
+  durationMonthsSlider: number;
   priceTarget: number;
   startPrice: number;
   volatility: VolatilityStep;

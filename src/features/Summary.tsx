@@ -1,8 +1,9 @@
 import useFormStore from '../lib/store';
 import { PeriodStep } from '../lib/types';
 const Summary = () => {
-  const { totalInvestment, estimatedValue, profit, formData } = useFormStore();
-  const { regularInvestment, period, durationMonths } = formData;
+  const { totalInvestment, estimatedValue, profit, durationMonths, formData } =
+    useFormStore();
+  const { regularInvestment, period } = formData;
 
   const totalInvestmetFormatted = new Intl.NumberFormat('en-US', {
     style: 'currency',
