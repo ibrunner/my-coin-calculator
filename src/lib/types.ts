@@ -15,6 +15,8 @@ export type FormData = {
   regularInvestment: number;
   period: PeriodStep;
   durationMonths: number;
+  priceTarget: number;
+  startPrice: number;
   volatility: VolatilityStep;
   whatIf: WhatIfStep;
 };
