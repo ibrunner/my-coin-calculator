@@ -7,32 +7,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      body {
+      .splash-gradient {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        font-family: 'Inter', sans-serif;
       }
-      .card-gradient {
-        background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+      .loading-ring {
+        animation: ring-spin 1s linear infinite;
       }
-      .input-gradient {
-        background: linear-gradient(145deg, #1e293b 0%, #172134 100%);
-      }
-      .chart-gradient {
-        background: linear-gradient(145deg, #1e293b 0%, #172134 100%);
+      @keyframes ring-spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
       .slider {
         -webkit-appearance: none;
-        height: 8px;
-        border-radius: 4px;
+        height: 6px;
+        border-radius: 3px;
         background: #1e293b;
       }
       .slider::-webkit-slider-thumb {
         -webkit-appearance: none;
-        width: 24px;
-        height: 24px;
+        width: 18px;
+        height: 18px;
         border-radius: 50%;
         background: #10b981;
-        box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         cursor: pointer;
       }
       .emoji-slider {
@@ -45,149 +46,172 @@
       }
     </style>
   </head>
-  <body class="min-h-screen p-4">
-    <div
-      class="page-container mx-auto max-w-md rounded-[40px] bg-slate-900 shadow-2xl"
-    >
-      <header class="border-b border-slate-800 p-6">
-        <h1 class="text-xl font-bold text-emerald-400">My Coin Calculator</h1>
-      </header>
-
-      <div class="space-y-6 p-6">
-        <!-- Initial Investment -->
-        <div class="space-y-2">
-          <label class="text-sm font-medium text-slate-300"
-            >Initial Investment</label
-          >
-          <div class="relative">
-            <span
-              class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
-              >$</span
-            >
-            <input
-              type="text"
-              value="1,000"
-              class="w-full rounded-xl border border-slate-700 bg-slate-800/50 px-8 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-            />
-          </div>
-        </div>
-
-        <!-- Regular Investment -->
-        <div class="space-y-2">
-          <label class="text-sm font-medium text-slate-300"
-            >Regular Investment</label
-          >
-          <div class="flex gap-3">
-            <div class="relative flex-1">
-              <span
-                class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
-                >$</span
-              >
-              <input
-                type="text"
-                value="50"
-                class="w-full rounded-xl border border-slate-700 bg-slate-800/50 px-8 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              />
-            </div>
-            <select
-              class="rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-            >
-              <option>weekly</option>
-              <option>monthly</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Price Target -->
-        <div class="space-y-2">
-          <label class="text-sm font-medium text-slate-300">Price Target</label>
-          <div class="relative">
-            <span
-              class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
-              >$</span
-            >
-            <input
-              type="text"
-              value="60,000"
-              class="w-full rounded-xl border border-slate-700 bg-slate-800/50 px-8 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-            />
-          </div>
-        </div>
-
-        <!-- Chart -->
-        <div class="rounded-xl bg-slate-800/50 p-4 shadow-lg">
-          <canvas id="investmentChart" class="h-48 w-full"></canvas>
-        </div>
-
-        <!-- Duration Slider -->
-        <div class="space-y-4">
-          <label class="text-sm font-medium text-slate-300">Duration</label>
-          <input
-            type="range"
-            min="6"
-            max="60"
-            value="24"
-            class="slider w-full"
-          />
-          <div class="flex justify-between text-xs text-slate-400">
-            <span>6 months</span>
-            <span class="text-emerald-400">24 months</span>
-            <span>5 years</span>
-          </div>
-        </div>
-
-        <!-- Volatility -->
-        <div class="space-y-4">
-          <label class="text-sm font-medium text-slate-300">Volatility</label>
-          <div class="h-2 rounded-full bg-slate-700">
-            <div
-              class="h-2 w-1/2 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400"
-            ></div>
-          </div>
-          <div class="flex justify-between text-xs text-slate-400">
-            <span>None</span>
-            <span class="text-emerald-400">Medium</span>
-            <span>High</span>
-          </div>
-        </div>
-
-        <!-- What If Scenarios -->
-        <div class="space-y-4">
-          <label class="text-sm font-medium text-slate-300"
-            >What If Scenarios</label
-          >
-          <div class="emoji-slider h-2 rounded-full"></div>
-          <div class="flex justify-between text-lg">
-            <span>🐻</span>
-            <span>🦀</span>
-            <span>💎</span>
-            <span class="text-2xl">🚀</span>
-            <span>🌕</span>
-          </div>
-        </div>
-
-        <!-- Results Card -->
-        <div class="space-y-4 rounded-2xl bg-emerald-900/20 p-6 shadow-lg">
-          <h2 class="font-medium text-emerald-400">Your Results</h2>
-          <div class="space-y-2">
-            <div class="flex justify-between">
-              <span class="text-slate-300">Total Invested:</span>
-              <span class="font-medium text-emerald-400">$2,400</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-slate-300">Estimated Value:</span>
-              <span class="font-medium text-emerald-400">$3,750</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Insight Card -->
+  <body class="flex min-h-screen items-center justify-center bg-slate-900 p-4">
+    <div class="flex gap-8">
+      <!-- Splash Screen -->
+      <div
+        class="h-[812px] w-[375px] overflow-hidden rounded-[40px] bg-slate-900 shadow-2xl"
+      >
         <div
-          class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 p-4 text-white shadow-lg"
+          class="splash-gradient flex h-full flex-col items-center justify-center p-8"
         >
-          <p class="text-center">
-            If you invest $50 weekly for 24 months, you could have $3,750!
+          <div class="relative mb-8">
+            <div
+              class="loading-ring absolute inset-0 h-24 w-24 rounded-full border-4 border-emerald-500/20 border-t-emerald-500"
+            ></div>
+            <svg
+              class="h-24 w-24 text-emerald-500"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                fill="currentColor"
+                opacity="0.2"
+              />
+              <path
+                d="M12 6v6l4 2"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <h2 class="text-xl font-bold text-emerald-400">
+            Loading Market Data
+          </h2>
+          <p class="mt-2 text-sm text-slate-400">
+            Fetching latest Bitcoin prices...
           </p>
+        </div>
+      </div>
+
+      <!-- Calculator Screen -->
+      <div
+        class="h-[812px] w-[375px] overflow-hidden rounded-[40px] bg-slate-900 shadow-2xl"
+      >
+        <div class="h-full p-4">
+          <!-- Top Row -->
+          <div class="mb-3 grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs font-medium text-slate-300">Initial</label>
+              <div class="relative">
+                <span
+                  class="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-emerald-500"
+                  >$</span
+                >
+                <input
+                  type="text"
+                  value="1,000"
+                  class="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-2 text-sm text-emerald-400"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-slate-300">Target</label>
+              <div class="relative">
+                <span
+                  class="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-emerald-500"
+                  >$</span
+                >
+                <input
+                  type="text"
+                  value="60,000"
+                  class="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-2 text-sm text-emerald-400"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Regular Investment Row -->
+          <div class="mb-3 flex gap-2">
+            <div class="flex-1">
+              <label class="text-xs font-medium text-slate-300"
+                >Regular Investment</label
+              >
+              <div class="relative">
+                <span
+                  class="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-emerald-500"
+                  >$</span
+                >
+                <input
+                  type="text"
+                  value="50"
+                  class="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-2 text-sm text-emerald-400"
+                />
+              </div>
+            </div>
+            <div class="w-24">
+              <label class="text-xs font-medium text-slate-300">&nbsp;</label>
+              <select
+                class="w-full rounded-lg border border-slate-700 bg-slate-800/50 py-2 text-sm text-emerald-400"
+              >
+                <option>weekly</option>
+                <option>monthly</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Chart -->
+          <div class="mb-3 rounded-xl bg-slate-800/50 p-3">
+            <canvas id="investmentChart" class="h-40 w-full"></canvas>
+          </div>
+
+          <!-- Sliders Section -->
+          <div class="space-y-3">
+            <div class="space-y-2">
+              <label class="text-xs font-medium text-slate-300">Duration</label>
+              <input
+                type="range"
+                min="6"
+                max="60"
+                value="24"
+                class="slider w-full"
+              />
+              <div class="flex justify-between text-xs text-slate-400">
+                <span>6m</span>
+                <span class="text-emerald-400">24m</span>
+                <span>5y</span>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-xs font-medium text-slate-300"
+                >Volatility</label
+              >
+              <div class="h-1.5 rounded-full bg-slate-700">
+                <div
+                  class="h-1.5 w-1/2 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400"
+                ></div>
+              </div>
+              <div class="flex justify-between text-xs text-slate-400">
+                <span>Low</span>
+                <span class="text-emerald-400">Med</span>
+                <span>High</span>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-xs font-medium text-slate-300"
+                >Scenarios</label
+              >
+              <div class="emoji-slider h-1.5 rounded-full"></div>
+              <div class="flex justify-between text-sm">
+                <span>🐻</span>
+                <span>🦀</span>
+                <span>💎</span>
+                <span>🚀</span>
+                <span>🌕</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card -->
+          <div
+            class="mt-3 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 p-3 text-center text-sm text-white"
+          >
+            Investing $50 weekly could grow to $3,750 in 24 months!
+          </div>
         </div>
       </div>
     </div>
