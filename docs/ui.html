@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crypto Investment Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        font-family: 'Inter', sans-serif;
+      }
+      .card-gradient {
+        background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+      }
+      .input-gradient {
+        background: linear-gradient(145deg, #1e293b 0%, #172134 100%);
+      }
+      .chart-gradient {
+        background: linear-gradient(145deg, #1e293b 0%, #172134 100%);
+      }
+      .slider {
+        -webkit-appearance: none;
+        height: 8px;
+        border-radius: 4px;
+        background: #1e293b;
+      }
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #10b981;
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        cursor: pointer;
+      }
+      .emoji-slider {
+        background: linear-gradient(
+          90deg,
+          #064e3b 0%,
+          #10b981 50%,
+          #34d399 100%
+        );
+      }
+    </style>
+  </head>
+  <body class="min-h-screen p-4">
+    <div
+      class="page-container mx-auto max-w-md rounded-[40px] bg-slate-900 shadow-2xl"
+    >
+      <header class="border-b border-slate-800 p-6">
+        <h1 class="text-xl font-bold text-emerald-400">My Coin Calculator</h1>
+      </header>
+
+      <div class="space-y-6 p-6">
+        <!-- Initial Investment -->
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-slate-300"
+            >Initial Investment</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
+              >$</span
+            >
+            <input
+              type="text"
+              value="1,000"
+              class="w-full rounded-xl border border-slate-700 bg-slate-800/50 px-8 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+
+        <!-- Regular Investment -->
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-slate-300"
+            >Regular Investment</label
+          >
+          <div class="flex gap-3">
+            <div class="relative flex-1">
+              <span
+                class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
+                >$</span
+              >
+              <input
+                type="text"
+                value="50"
+                class="w-full rounded-xl border border-slate-700 bg-slate-800/50 px-8 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+            <select
+              class="rounded-xl border border-slate-700 bg-slate-800/50 px-4 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            >
+              <option>weekly</option>
+              <option>monthly</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Price Target -->
+        <div class="space-y-2">
+          <label class="text-sm font-medium text-slate-300">Price Target</label>
+          <div class="relative">
+            <span
+              class="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500"
+              >$</span
+            >
+            <input
+              type="text"
+              value="60,000"
+              class="w-full rounded-xl border border-slate-700 bg-slate-800/50 px-8 py-3 text-emerald-400 shadow-lg focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            />
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="rounded-xl bg-slate-800/50 p-4 shadow-lg">
+          <canvas id="investmentChart" class="h-48 w-full"></canvas>
+        </div>
+
+        <!-- Duration Slider -->
+        <div class="space-y-4">
+          <label class="text-sm font-medium text-slate-300">Duration</label>
+          <input
+            type="range"
+            min="6"
+            max="60"
+            value="24"
+            class="slider w-full"
+          />
+          <div class="flex justify-between text-xs text-slate-400">
+            <span>6 months</span>
+            <span class="text-emerald-400">24 months</span>
+            <span>5 years</span>
+          </div>
+        </div>
+
+        <!-- Volatility -->
+        <div class="space-y-4">
+          <label class="text-sm font-medium text-slate-300">Volatility</label>
+          <div class="h-2 rounded-full bg-slate-700">
+            <div
+              class="h-2 w-1/2 rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400"
+            ></div>
+          </div>
+          <div class="flex justify-between text-xs text-slate-400">
+            <span>None</span>
+            <span class="text-emerald-400">Medium</span>
+            <span>High</span>
+          </div>
+        </div>
+
+        <!-- What If Scenarios -->
+        <div class="space-y-4">
+          <label class="text-sm font-medium text-slate-300"
+            >What If Scenarios</label
+          >
+          <div class="emoji-slider h-2 rounded-full"></div>
+          <div class="flex justify-between text-lg">
+            <span>🐻</span>
+            <span>🦀</span>
+            <span>💎</span>
+            <span class="text-2xl">🚀</span>
+            <span>🌕</span>
+          </div>
+        </div>
+
+        <!-- Results Card -->
+        <div class="space-y-4 rounded-2xl bg-emerald-900/20 p-6 shadow-lg">
+          <h2 class="font-medium text-emerald-400">Your Results</h2>
+          <div class="space-y-2">
+            <div class="flex justify-between">
+              <span class="text-slate-300">Total Invested:</span>
+              <span class="font-medium text-emerald-400">$2,400</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-300">Estimated Value:</span>
+              <span class="font-medium text-emerald-400">$3,750</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insight Card -->
+        <div
+          class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 p-4 text-white shadow-lg"
+        >
+          <p class="text-center">
+            If you invest $50 weekly for 24 months, you could have $3,750!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize Chart
+      const ctx = document.getElementById('investmentChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['', '', '', '', '', ''],
+          datasets: [
+            {
+              label: 'Price',
+              data: [10, 15, 12, 18, 15, 20],
+              borderColor: '#818cf8',
+              borderDash: [5, 5],
+              tension: 0.4,
+            },
+            {
+              label: 'Value',
+              data: [10, 12, 14, 16, 18, 20],
+              borderColor: '#10b981',
+              tension: 0.4,
+            },
+            {
+              label: 'Invested',
+              data: [10, 11, 12, 13, 14, 15],
+              borderColor: '#fbbf24',
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              labels: {
+                color: '#94a3b8',
+              },
+            },
+          },
+          scales: {
+            y: {
+              grid: {
+                color: '#1e293b',
+              },
+              ticks: {
+                color: '#94a3b8',
+              },
+            },
+            x: {
+              grid: {
+                color: '#1e293b',
+              },
+              ticks: {
+                color: '#94a3b8',
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
