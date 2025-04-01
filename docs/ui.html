@@ -258,20 +258,20 @@
 
       <!-- Calculator Screen -->
       <div
-        class="relative h-[812px] w-[375px] overflow-hidden rounded-[40px] shadow-2xl"
+        class="relative h-[812px] w-[375px] overflow-hidden rounded-[40px] pb-14 shadow-2xl"
       >
         <div class="calculator-gradient absolute inset-0"></div>
         <div class="bokeh-overlay"></div>
         <div class="relative h-full">
           <!-- Simplified Header -->
-          <div class="crystal-header relative z-10 py-3">
+          <div class="relative z-10 pt-4">
             <h1 class="text-center text-lg font-bold text-sky-100">
               My Coin Calculator
             </h1>
           </div>
 
           <!-- Main Content -->
-          <div class="p-4">
+          <div class="flex h-full flex-col p-4">
             <!-- Bitcoin & Target Price Row -->
             <div class="mb-3 flex items-end gap-3">
               <div class="flex-1">
@@ -421,12 +421,15 @@
               </div>
             </div>
 
-            <!-- Bottom Card - Now with more vertical space -->
+            <!-- Bottom Card - Now with flex-grow and centered content -->
             <div
-              class="mt-4 rounded-xl bg-gradient-to-r from-sky-600 to-sky-400 p-4 text-center text-white shadow-lg"
+              class="mt-4 flex flex-1 flex-grow items-center rounded-xl bg-gradient-to-r from-sky-600 to-sky-400 p-4 text-center text-white shadow-lg"
             >
-              <p class="text-base">
-                Investing $50 weekly could grow to $3,750 in 24 months!
+              <p class="w-full text-base">
+                Investing <span class="font-bold text-sky-100">$50</span> weekly
+                could grow to
+                <span class="font-bold text-sky-100">$3,750</span> in
+                <span class="font-bold text-sky-100">24</span> months!
               </p>
             </div>
           </div>
