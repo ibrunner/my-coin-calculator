@@ -8,7 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
       .splash-gradient {
-        background: linear-gradient(135deg, #042f2e 0%, #134e4a 100%);
+        background: radial-gradient(
+          circle at top left,
+          #134e4a 0%,
+          #0f172a 40%,
+          #020617 100%
+        );
       }
       .calculator-gradient {
         background: radial-gradient(
@@ -49,8 +54,29 @@
         backdrop-filter: blur(12px);
         border: 1px solid rgba(94, 234, 212, 0.1);
       }
+      .loading-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin-bottom: 2rem;
+      }
       .loading-ring {
+        position: absolute;
+        inset: 0;
+        border: 3px solid rgba(56, 189, 248, 0.1);
+        border-top: 3px solid #38bdf8;
+        border-radius: 50%;
         animation: ring-spin 1s linear infinite;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+      }
+      .loading-icon {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 80px;
+        height: 80px;
+        color: #38bdf8;
+        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.3));
       }
       @keyframes ring-spin {
         0% {
@@ -131,6 +157,20 @@
           inset 1px 1px 1px rgba(56, 189, 248, 0.1),
           2px 2px 4px rgba(2, 6, 23, 0.3);
       }
+      .loading-ring-container {
+        background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.1) 0%,
+          rgba(15, 23, 42, 0.95) 100%
+        );
+        border: 1px solid rgba(56, 189, 248, 0.1);
+        box-shadow:
+          inset -1px -1px 1px rgba(255, 255, 255, 0.2),
+          inset 1px 1px 1px rgba(56, 189, 248, 0.1),
+          2px 2px 4px rgba(2, 6, 23, 0.3);
+        border-radius: 50%;
+        padding: 2rem;
+      }
     </style>
   </head>
   <body class="flex min-h-screen items-center justify-center bg-slate-900 p-4">
@@ -140,34 +180,49 @@
         class="h-[812px] w-[375px] overflow-hidden rounded-[40px] bg-slate-900 shadow-2xl"
       >
         <div
-          class="splash-gradient flex h-full flex-col items-center justify-center p-8"
+          class="splash-gradient relative flex h-full flex-col items-center justify-center p-8"
         >
-          <div class="relative mb-8">
+          <div class="absolute inset-0 opacity-50">
             <div
-              class="loading-ring absolute inset-0 h-24 w-24 rounded-full border-4 border-teal-500/20 border-t-teal-400"
+              class="absolute h-20 w-20 rounded-full bg-sky-400/10 blur-xl"
+              style="top: 20%; left: 30%"
             ></div>
-            <svg
-              class="h-24 w-24 text-teal-500"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-                fill="currentColor"
-                opacity="0.2"
-              />
-              <path
-                d="M12 6v6l4 2"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
+            <div
+              class="absolute h-32 w-32 rounded-full bg-sky-400/10 blur-xl"
+              style="top: 50%; right: 20%"
+            ></div>
+            <div
+              class="absolute h-24 w-24 rounded-full bg-sky-400/5 blur-xl"
+              style="bottom: 30%; left: 40%"
+            ></div>
           </div>
-          <h2 class="text-xl font-bold text-teal-300">Loading Market Data</h2>
-          <p class="mt-2 text-sm text-teal-200/60">
-            Fetching latest Bitcoin prices...
-          </p>
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="loading-container">
+              <div class="loading-ring"></div>
+              <svg class="loading-icon" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                  fill="currentColor"
+                  opacity="0.2"
+                />
+                <path
+                  d="M12 6v6l4 2"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <h2 class="text-center text-xl font-bold text-sky-100">
+              Loading Market Data
+            </h2>
+            <p class="mt-2 text-center text-sm text-sky-200/60">
+              Fetching latest Bitcoin prices...
+            </p>
+          </div>
+          <div
+            class="absolute inset-0 rotate-45 transform bg-gradient-to-tr from-transparent via-sky-400/5 to-transparent"
+          ></div>
         </div>
       </div>
 
