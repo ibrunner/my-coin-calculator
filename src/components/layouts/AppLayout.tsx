@@ -1,15 +1,17 @@
+import BitcoinPrice from '@/features/BitcoinPrice';
 import CalculatorForm from '@/features/CalculatorForm';
 import Chart from '@/features/ProjectionChart';
 import Summary from '@/features/Summary';
 
-interface AppLayoutProps {}
-
-const AppLayout: React.FC<AppLayoutProps> = () => {
+const AppLayout = () => {
   return (
-    <div className="bg-tertiary text-primary min-h-screen">
+    <div className="bg-tertiary text-primary h-full min-h-screen">
       {/* Header */}
       <header className="bg-secondary sticky top-0 z-10 w-full p-4 text-white shadow-md">
-        <h1>My Coin Calculator</h1>
+        <div className="flex items-center justify-between">
+          <h1>My Coin Calculator</h1>
+          <BitcoinPrice />
+        </div>
       </header>
       {/* Main */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
