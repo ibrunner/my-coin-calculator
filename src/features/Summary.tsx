@@ -36,20 +36,20 @@ const Summary = () => {
 
   return (
     <>
-      <div className="mb-2 rounded-lg bg-white p-4 shadow-md">
+      <div className="bg-secondary mb-2 rounded-lg p-4 shadow-md">
         <h2>Your Results</h2>
         <div className="grid grid-cols-2 gap-y-2">
-          <div className="text-left text-gray-600">Total Invested:</div>
+          <div className="text-left">Total Invested:</div>
           <div className="text-right font-medium">
             {totalInvestmetFormatted}
           </div>
-          <div className="text-left text-gray-600">Estimated Value:</div>
+          <div className="text-left">Estimated Value:</div>
           <div className="text-right font-medium">
             {estimatedValueFormatted}
           </div>
         </div>
       </div>
-      <div className="rounded-lg bg-white p-4 shadow-md">
+      <div className="bg-secondary rounded-lg p-4 shadow-md">
         If you invested {regularInvestmentFormatted} {periodHash[period]}{' '}
         for&nbsp;
         {durationMonths} months you could profit {profitFormatted}!
