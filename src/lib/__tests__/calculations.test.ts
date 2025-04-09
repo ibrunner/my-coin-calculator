@@ -20,6 +20,7 @@ describe('generateWeeklyDataPoints', () => {
       regularInvestment: 100,
       period: 'weekly',
       durationMonthsSlider: 1,
+      durationMonths: 1,
       priceTarget: 100000,
       btcPrice: 50000,
       volatility: 0,
@@ -42,6 +43,7 @@ describe('generateWeeklyDataPoints', () => {
       regularInvestment: 100,
       period: 'weekly',
       durationMonthsSlider: 1,
+      durationMonths: 1,
       priceTarget: 50000, // Same as initial price for easier testing
       btcPrice: 50000,
       volatility: 0,
@@ -67,6 +69,7 @@ describe('generateWeeklyDataPoints', () => {
       regularInvestment: 100,
       period: 'monthly',
       durationMonthsSlider: 2,
+      durationMonths: 2,
       priceTarget: 50000,
       btcPrice: 50000,
       volatility: 0,
@@ -81,17 +84,6 @@ describe('generateWeeklyDataPoints', () => {
       totalBtcAssets: 0.02,
     });
 
-    // Log all data points for debugging
-    console.log(
-      'All data points:',
-      result.map((p) => ({
-        date: p.date,
-        isRegularPurchase: p.isRegularPurchase,
-        btcPurchased: p.btcPurchased,
-        isInitial: p === result[0],
-      }))
-    );
-
     // No other regular purchases in January
     const januaryPurchases = result.filter((p) => {
       const date = dayjs(p.date);
@@ -101,14 +93,14 @@ describe('generateWeeklyDataPoints', () => {
         p.isRegularPurchase
       ); // Is a regular purchase
     });
-    console.log('January purchases (excluding initial):', januaryPurchases);
+
     expect(januaryPurchases.length).toBe(0);
 
     // February should have one regular purchase in the first week
     const februaryPurchases = result.filter(
       (p) => dayjs(p.date).month() === 1 && p.isRegularPurchase
     );
-    console.log('February purchases:', februaryPurchases);
+
     expect(februaryPurchases.length).toBe(1);
     expect(februaryPurchases[0].btcPurchased).toBe(0.002); // Regular 100/50000
 
@@ -127,6 +119,7 @@ describe('generateWeeklyDataPoints', () => {
       regularInvestment: 100,
       period: 'weekly',
       durationMonthsSlider: 1,
+      durationMonths: 1,
       priceTarget: 60000, // 20% increase
       btcPrice: 50000,
       volatility: 0,
@@ -142,5 +135,22 @@ describe('generateWeeklyDataPoints', () => {
     const midPoint = Math.floor(result.length / 2);
     const midDelta = result[midPoint].btcPrice - result[midPoint - 1].btcPrice;
     expect(firstDelta).toBeCloseTo(midDelta, 0); // Should be roughly the same
+  });
+
+  it('should calculate total investment correctly for 60 months of monthly investments', () => {
+    const result = generateWeeklyDataPoints({
+      initialInvestment: 0,
+      regularInvestment: 100,
+      period: 'monthly',
+      durationMonthsSlider: 60,
+      durationMonths: 60,
+      priceTarget: 50000,
+      btcPrice: 50000,
+      volatility: 0,
+      whatIf: 0,
+    });
+
+    const totalInvested = result[result.length - 1].totalInvested;
+    expect(totalInvested).toBe(6000); // $100 * 60 months = $6000
   });
 });

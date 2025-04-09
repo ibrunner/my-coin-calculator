@@ -4,14 +4,25 @@ import useFormStore from '../lib/store';
 import useBtcPrice from './useBtcPrice';
 
 const usePortfolioCalcuations = () => {
-  const { formData } = useFormStore();
+  const { formData, durationMonths } = useFormStore();
   const { data: btcPrice, isLoading } = useBtcPrice();
 
   const calculatedPortfolioValue = useMemo(() => {
     if (!btcPrice) {
       return null;
     }
-    const timeSeriesData = generateWeeklyDataPoints({ ...formData, btcPrice });
+    const timeSeriesData = generateWeeklyDataPoints({
+      ...formData,
+      durationMonths,
+      btcPrice,
+    });
+    console.log(
+      'total invested',
+      timeSeriesData[timeSeriesData.length - 1].totalInvested
+    );
+    console.log('months', formData.durationMonthsSlider);
+    console.log('weeks', timeSeriesData.length);
+    console.log(timeSeriesData);
     return {
       timeSeriesData,
       totalInvestment: timeSeriesData[timeSeriesData.length - 1].totalInvested,

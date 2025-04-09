@@ -22,13 +22,11 @@ import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 const calculatorFormSchema = z.object({
-  initialInvestment: z.number(),
-  regularInvestment: z.number().min(1, {
-    message: 'Regular investment must be greater than 0',
-  }),
+  initialInvestment: z.number().min(0),
+  regularInvestment: z.number().min(0),
   period: z.enum(periods),
-  durationMonthsSlider: z.number().min(6).max(60),
-  priceTarget: z.number(),
+  durationMonths: z.number().min(6).max(60),
+  priceTarget: z.number().min(0),
   volatility: z.number().min(0).max(4),
   whatIf: z.number().min(0).max(4),
 });
@@ -144,24 +142,14 @@ const CalculatorForm = () => {
         />
         <FormField
           control={form.control}
-          name="durationMonthsSlider"
+          name="durationMonths"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration</FormLabel>
-              <Slider
-                defaultValue={[3]}
-                max={6}
-                step={1}
-                value={[field.value]}
-                onValueChange={(values) => {
-                  field.onChange(values[0]);
-                }}
-              />
-              <div className="mt-2 grid w-full grid-cols-3">
-                <span className="text-left text-sm">6 months</span>
-                <span className="text-center text-sm">24 months</span>
-                <span className="text-right text-sm">5 years</span>
-              </div>
+              <FormLabel>Duration (months)</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

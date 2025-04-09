@@ -6,35 +6,42 @@ dayjs.extend(isSameOrBefore);
 
 interface GenerateWeeklyDataPointsParams extends FormData {
   btcPrice: number;
+  durationMonths: number;
 }
 
 export const generateWeeklyDataPoints = ({
   initialInvestment,
   regularInvestment,
   period,
-  durationMonthsSlider: durationMonths,
+  durationMonths,
   priceTarget,
   btcPrice,
 }: GenerateWeeklyDataPointsParams): TimeSeriesPoint[] => {
   const currentDate = dayjs();
+
   const endDate = currentDate.add(durationMonths, 'month');
   const numWeeks = endDate.diff(currentDate, 'week');
 
   const dataPoints: TimeSeriesPoint[] = [];
   let currentIterationDate = currentDate;
-  let initialMonth = currentDate.month();
+  let lastPurchaseMonth = currentDate.month();
+  let lastPurchaseYear = currentDate.year();
 
   while (currentIterationDate.isSameOrBefore(endDate)) {
     const currentMonth = currentIterationDate.month();
-    const isFirstWeekOfNewMonth =
-      currentMonth !== initialMonth && currentIterationDate.date() <= 7;
+    const currentYear = currentIterationDate.year();
+
+    // For monthly purchases, check if we're in a new month-year combination
+    const isNewMonth =
+      period === 'monthly' &&
+      (currentMonth !== lastPurchaseMonth || currentYear !== lastPurchaseYear);
 
     // Regular purchases happen:
     // - For weekly: every week after the initial investment
-    // - For monthly: first week of each month after the initial month
+    // - For monthly: first occurrence of each new month
     const isRegularPurchase =
       (period === 'weekly' && dataPoints.length > 0) ||
-      (period === 'monthly' && isFirstWeekOfNewMonth);
+      (period === 'monthly' && isNewMonth);
 
     if (dataPoints.length === 0) {
       const initialBtcPurchased = initialInvestment / btcPrice;
@@ -44,7 +51,7 @@ export const generateWeeklyDataPoints = ({
         portfolioValue: initialInvestment,
         totalInvested: initialInvestment,
         btcPurchased: initialBtcPurchased,
-        isRegularPurchase: false, // Initial investment is not a regular purchase
+        isRegularPurchase: false,
         totalBtcAssets: initialBtcPurchased,
       });
     } else {
@@ -69,6 +76,11 @@ export const generateWeeklyDataPoints = ({
         isRegularPurchase,
         totalBtcAssets: prevDataPoint.totalBtcAssets + newBtcPurchased,
       });
+    }
+
+    if (isRegularPurchase && period === 'monthly') {
+      lastPurchaseMonth = currentMonth;
+      lastPurchaseYear = currentYear;
     }
 
     currentIterationDate = currentIterationDate.add(1, 'week');
