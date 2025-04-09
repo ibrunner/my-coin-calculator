@@ -4,7 +4,8 @@ import { FormData, TimeSeriesPoint } from './types';
 
 dayjs.extend(isSameOrBefore);
 
-interface GenerateWeeklyDataPointsParams extends FormData {
+interface GenerateWeeklyDataPointsParams
+  extends Omit<FormData, 'durationMonthsSlider'> {
   btcPrice: number;
   durationMonths: number;
 }

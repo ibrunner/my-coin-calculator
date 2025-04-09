@@ -16,13 +16,6 @@ const usePortfolioCalcuations = () => {
       durationMonths,
       btcPrice,
     });
-    console.log(
-      'total invested',
-      timeSeriesData[timeSeriesData.length - 1].totalInvested
-    );
-    console.log('months', formData.durationMonthsSlider);
-    console.log('weeks', timeSeriesData.length);
-    console.log(timeSeriesData);
     return {
       timeSeriesData,
       totalInvestment: timeSeriesData[timeSeriesData.length - 1].totalInvested,
