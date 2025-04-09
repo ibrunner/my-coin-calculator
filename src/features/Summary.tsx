@@ -4,9 +4,9 @@ import { PeriodStep } from '../lib/types';
 import { formatCurrency } from '../lib/utils';
 
 const periodHash: Record<PeriodStep, string> = {
-  daily: 'daily',
+  // daily: 'daily',
   weekly: 'weekly',
-  '2xMonthly': '2x monthly',
+  // '2xMonthly': '2x monthly',
   monthly: 'monthly',
 } as const;
 

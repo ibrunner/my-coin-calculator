@@ -12,8 +12,8 @@ export const generateWeeklyDataPoints = ({
   durationMonthsSlider: durationMonths,
   priceTarget,
   startPrice: btcPrice,
-  volatility,
-  whatIf,
+  //   volatility,
+  //   whatIf,
 }: GenerateWeeklyDataPointsParams): TimeSeriesPoint[] => {
   const currentDate = dayjs();
   const endDate = currentDate.add(durationMonths, 'month');
