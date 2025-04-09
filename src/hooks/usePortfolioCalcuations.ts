@@ -20,12 +20,12 @@ const calculatePorfolioValue = (
     case 'weekly':
       payPeriodsPerMonth = 4.333;
       break;
-    case '2xMonthly':
-      payPeriodsPerMonth = 2;
-      break;
-    case 'daily':
-      payPeriodsPerMonth = 30.5;
-      break;
+    // case '2xMonthly':
+    //   payPeriodsPerMonth = 2;
+    //   break;
+    // case 'daily':
+    //   payPeriodsPerMonth = 30.5;
+    //   break;
     default:
       payPeriodsPerMonth = 1;
   }

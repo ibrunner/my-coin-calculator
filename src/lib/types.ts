@@ -7,7 +7,7 @@ export type VolatilityStep = (typeof volatilitySteps)[number];
 export const whatIfSteps = [0, 1, 2, 3, 4] as const;
 export type WhatIfStep = (typeof whatIfSteps)[number];
 
-export const periods = ['daily', 'weekly', '2xMonthly', 'monthly'] as const;
+export const periods = ['weekly', 'monthly'] as const;
 export type PeriodStep = (typeof periods)[number];
 
 export type FormData = {
@@ -19,4 +19,14 @@ export type FormData = {
   startPrice: number;
   volatility: VolatilityStep;
   whatIf: WhatIfStep;
+};
+
+export type TimeSeriesPoint = {
+  date: Date;
+  btcPrice: number;
+  portfolioValue: number;
+  investedAmount: number;
+  btcPurchased: number;
+  isRegularPurchase: boolean;
+  totalBtcPurchased: number;
 };
