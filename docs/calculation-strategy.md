@@ -80,7 +80,7 @@ interface TimeSeriesPoint {
   date: Date;
   bitcoinPrice: number;
   portfolioValue: number;
-  investedAmount: number;
+  totalInvested: number;
   coinsPurchased: number;
 }
 ```

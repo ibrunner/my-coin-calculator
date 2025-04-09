@@ -14,11 +14,11 @@ const usePortfolioCalcuations = () => {
     const timeSeriesData = generateWeeklyDataPoints({ ...formData, btcPrice });
     return {
       timeSeriesData,
-      totalInvestment: timeSeriesData[timeSeriesData.length - 1].investedAmount,
+      totalInvestment: timeSeriesData[timeSeriesData.length - 1].totalInvested,
       estimatedValue: timeSeriesData[timeSeriesData.length - 1].portfolioValue,
       profit:
         timeSeriesData[timeSeriesData.length - 1].portfolioValue -
-        timeSeriesData[0].investedAmount,
+        timeSeriesData[0].totalInvested,
     };
   }, [btcPrice, formData]);
 

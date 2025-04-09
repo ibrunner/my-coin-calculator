@@ -24,8 +24,8 @@ export type TimeSeriesPoint = {
   date: Date;
   btcPrice: number;
   portfolioValue: number;
-  investedAmount: number;
+  totalInvested: number;
   btcPurchased: number;
   isRegularPurchase: boolean;
-  totalBtcPurchased: number;
+  totalBtcAssets: number;
 };

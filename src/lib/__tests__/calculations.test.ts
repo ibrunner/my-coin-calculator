@@ -28,9 +28,9 @@ describe('generateWeeklyDataPoints', () => {
 
     expect(result[0]).toMatchObject({
       portfolioValue: 1000,
-      investedAmount: 1000,
+      totalInvested: 1000,
       btcPurchased: 0.02, // 1000/50000
-      totalBtcPurchased: 0.02,
+      totalBtcAssets: 0.02,
       btcPrice: 50000,
       isRegularPurchase: false,
     });
@@ -54,9 +54,9 @@ describe('generateWeeklyDataPoints', () => {
 
     // Check second week's values
     const secondWeek = result[1];
-    expect(secondWeek.investedAmount).toBe(1100); // 1000 + 100
+    expect(secondWeek.totalInvested).toBe(1100); // 1000 + 100
     expect(secondWeek.btcPurchased).toBe(0.002); // 100/50000 (just this week's purchase)
-    expect(secondWeek.totalBtcPurchased).toBe(0.022); // 0.02 + 0.002 (cumulative)
+    expect(secondWeek.totalBtcAssets).toBe(0.022); // 0.02 + 0.002 (cumulative)
     expect(secondWeek.isRegularPurchase).toBe(true);
   });
 
@@ -78,7 +78,7 @@ describe('generateWeeklyDataPoints', () => {
       date: new Date('2024-01-08'),
       btcPurchased: 0.02, // Initial 1000/50000
       isRegularPurchase: false,
-      totalBtcPurchased: 0.02,
+      totalBtcAssets: 0.02,
     });
 
     // Log all data points for debugging
