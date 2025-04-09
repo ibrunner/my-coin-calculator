@@ -115,9 +115,9 @@ const CalculatorForm = () => {
                 <SelectValue placeholder="Period" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily">Daily</SelectItem>
+                {/* <SelectItem value="daily">Daily</SelectItem> */}
                 <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="2xMonthly">2x Monthly</SelectItem>
+                {/* <SelectItem value="2xMonthly">2x Monthly</SelectItem> */}
                 <SelectItem value="monthly">Monthly</SelectItem>
               </SelectContent>
             </Select>
