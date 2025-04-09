@@ -1,4 +1,5 @@
-import usePortfolioCalcuations from '@/hooks/usePortfolioCalcuations';
+import useBtcPrice from '@/hooks/useBtcPrice';
+import { generateWeeklyDataPoints } from '@/lib/calculations';
 import useFormStore from '@/lib/store';
 import {
   Area,
@@ -9,35 +10,18 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-// import useBtcPrice from '@/hooks/useBtcPrice';
 
 const ProjectionChart = () => {
   const { formData } = useFormStore();
-  const { initialInvestment } = formData;
-
-  const { calculatedPortfolioValue } = usePortfolioCalcuations();
-
-  // const { btcPrice } = useBtcPrice();
-
-  const data = [
-    {
-      name: 'Start',
-      portfolioValue: initialInvestment,
-      // btcValue: 78000,
-    },
-    {
-      name: 'End',
-      portfolioValue: calculatedPortfolioValue?.estimatedValue,
-      // btcValue: 100000,
-    },
-  ];
+  const { data: btcPrice } = useBtcPrice();
+  const dataPoints = generateWeeklyDataPoints({ ...formData, btcPrice });
 
   return (
     <div className="mb-2 h-[300px] w-full md:h-[500px]">
       <div className="text-secondary bg-secondary flex h-full w-full items-center justify-center">
         <ResponsiveContainer width="90%" height="80%">
           <AreaChart
-            data={data}
+            data={dataPoints}
             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           >
             <XAxis dataKey="name" />

@@ -21,7 +21,7 @@ describe('generateWeeklyDataPoints', () => {
       period: 'weekly',
       durationMonthsSlider: 1,
       priceTarget: 100000,
-      startPrice: 50000,
+      btcPrice: 50000,
       volatility: 0,
       whatIf: 0,
     });
@@ -43,7 +43,7 @@ describe('generateWeeklyDataPoints', () => {
       period: 'weekly',
       durationMonthsSlider: 1,
       priceTarget: 50000, // Same as initial price for easier testing
-      startPrice: 50000,
+      btcPrice: 50000,
       volatility: 0,
       whatIf: 0,
     });
@@ -68,7 +68,7 @@ describe('generateWeeklyDataPoints', () => {
       period: 'monthly',
       durationMonthsSlider: 2,
       priceTarget: 50000,
-      startPrice: 50000,
+      btcPrice: 50000,
       volatility: 0,
       whatIf: 0,
     });
@@ -128,7 +128,7 @@ describe('generateWeeklyDataPoints', () => {
       period: 'weekly',
       durationMonthsSlider: 1,
       priceTarget: 60000, // 20% increase
-      startPrice: 50000,
+      btcPrice: 50000,
       volatility: 0,
       whatIf: 0,
     });

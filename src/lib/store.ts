@@ -7,7 +7,6 @@ const DEFAULT_FORM_DATA: FormData = {
   period: 'monthly',
   durationMonthsSlider: 3,
   priceTarget: 100000,
-  startPrice: 60000,
   volatility: 0,
   whatIf: 0,
 };

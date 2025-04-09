@@ -16,7 +16,6 @@ export type FormData = {
   period: PeriodStep;
   durationMonthsSlider: number;
   priceTarget: number;
-  startPrice: number;
   volatility: VolatilityStep;
   whatIf: WhatIfStep;
 };

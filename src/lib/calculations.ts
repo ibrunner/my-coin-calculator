@@ -1,9 +1,12 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { FormData, TimeSeriesPoint } from './types';
+
 dayjs.extend(isSameOrBefore);
 
-type GenerateWeeklyDataPointsParams = FormData;
+interface GenerateWeeklyDataPointsParams extends FormData {
+  btcPrice: number;
+}
 
 export const generateWeeklyDataPoints = ({
   initialInvestment,
@@ -11,9 +14,7 @@ export const generateWeeklyDataPoints = ({
   period,
   durationMonthsSlider: durationMonths,
   priceTarget,
-  startPrice: btcPrice,
-  //   volatility,
-  //   whatIf,
+  btcPrice,
 }: GenerateWeeklyDataPointsParams): TimeSeriesPoint[] => {
   const currentDate = dayjs();
   const endDate = currentDate.add(durationMonths, 'month');
