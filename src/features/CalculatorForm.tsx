@@ -16,11 +16,12 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import useFormStore from '@/lib/store';
-import { durationSteps, FormData, periods } from '@/lib/types';
+import { durationSteps, FormData, periods, scenarios } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
 const calculatorFormSchema = z.object({
   initialInvestment: z.number(),
   regularInvestment: z.number().min(1, {
@@ -201,7 +202,7 @@ const CalculatorForm = () => {
           name="whatIf"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>What If?</FormLabel>
+              <FormLabel>What If? - {scenarios[field.value]}</FormLabel>
               <Slider
                 defaultValue={[0]}
                 max={4}

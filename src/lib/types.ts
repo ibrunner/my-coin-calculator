@@ -10,6 +10,8 @@ export type WhatIfStep = (typeof whatIfSteps)[number];
 export const periods = ['weekly', 'monthly'] as const;
 export type PeriodStep = (typeof periods)[number];
 
+export const scenarios = ['Custom', 'Bear', 'Crab', 'HODL', 'Moon'] as const;
+export type ScenarioStep = (typeof scenarios)[number];
 export type FormData = {
   initialInvestment: number;
   regularInvestment: number;
