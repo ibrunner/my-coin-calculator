@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import useBtcPrice from '@/hooks/useBtcPrice';
 import useFormStore from '@/lib/store';
 import { durationSteps, FormData, periods, scenarios } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -37,6 +38,7 @@ const calculatorFormSchema = z.object({
 const CalculatorForm = () => {
   const { formData, updateFormData } = useFormStore();
   const isUpdatingFromStore = useRef(false);
+  const { data: btcPrice } = useBtcPrice();
 
   const form = useForm<z.infer<typeof calculatorFormSchema>>({
     resolver: zodResolver(calculatorFormSchema),
@@ -49,13 +51,13 @@ const CalculatorForm = () => {
     const subscription = form.watch((value, { type }) => {
       // Only update store when changes are from user input, not from store sync
       if (!isUpdatingFromStore.current && type === 'change') {
-        updateFormData(value as FormData);
+        updateFormData(value as FormData, btcPrice);
       }
     });
 
     // Cleanup subscription on unmount
     return () => subscription.unsubscribe();
-  }, [form, updateFormData]);
+  }, [form, updateFormData, btcPrice]);
 
   // Sync from store to form when store changes externally
   useEffect(() => {
@@ -186,7 +188,9 @@ const CalculatorForm = () => {
                 max={4}
                 step={1}
                 value={[field.value]}
-                onValueChange={field.onChange}
+                onValueChange={(values) => {
+                  field.onChange(values[0]);
+                }}
               />
               <div className="mt-2 grid w-full grid-cols-3">
                 <span className="text-left text-sm">Boomer Stocks 👴</span>
@@ -208,7 +212,9 @@ const CalculatorForm = () => {
                 max={4}
                 step={1}
                 value={[field.value]}
-                onValueChange={field.onChange}
+                onValueChange={(values) => {
+                  field.onChange(values[0]);
+                }}
               />
               <div className="relative mt-2 h-6 w-full px-2">
                 <div className="absolute left-0 -translate-x-0 transform text-sm">

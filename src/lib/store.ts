@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getScenarioValues } from './scenarios';
 import { DurationStep, durationSteps, FormData, WhatIfStep } from './types';
 
 const DEFAULT_FORM_DATA: FormData = {
@@ -18,13 +19,13 @@ const DEFAULT_STORE_DATA: Omit<FormStore, 'updateFormData' | 'updateField'> = {
 
 interface FormStore {
   formData: FormData;
-  updateFormData: (formData: FormData) => void;
+  updateFormData: (formData: FormData, btcPrice?: number) => void;
   durationMonths: DurationStep;
 }
 
 const useFormStore = create<FormStore>((set) => ({
   ...DEFAULT_STORE_DATA,
-  updateFormData: (formData: FormData) => {
+  updateFormData: (formData: FormData, btcPrice?: number) => {
     // reset whatIf to zero when other fields change in this update
     const currentFormData = useFormStore.getState().formData;
 
@@ -45,9 +46,14 @@ const useFormStore = create<FormStore>((set) => ({
       }
     );
 
-    const updatedFormData = hasOtherFieldsChanged
-      ? { ...formData, whatIf: 0 as WhatIfStep }
+    // update formData with scenario values if btcPrice is available
+    let updatedFormData = btcPrice
+      ? getScenarioValues(formData, btcPrice)
       : formData;
+
+    updatedFormData = hasOtherFieldsChanged
+      ? { ...updatedFormData, whatIf: 0 as WhatIfStep }
+      : updatedFormData;
 
     set({
       formData: updatedFormData,
