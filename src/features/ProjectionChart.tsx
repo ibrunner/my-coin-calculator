@@ -79,6 +79,15 @@ const ProjectionChart = () => {
               yAxisId="left"
               name="Portfolio Value"
             />
+            <Area
+              type="monotone"
+              dataKey={(data) => data.portfolioValue - data.totalInvested}
+              stroke="#4CAF50"
+              fill="#4CAF50"
+              fillOpacity={0.3}
+              yAxisId="left"
+              name="Profits"
+            />
             <Line
               type="monotone"
               dataKey="btcPrice"
@@ -98,10 +107,12 @@ const ProjectionChart = () => {
 export default ProjectionChart;
 
 const CustomTooltip = ({ dataPoint }: { dataPoint: TimeSeriesPoint }) => {
+  const profits = dataPoint.portfolioValue - dataPoint.totalInvested;
   return (
     <div className="rounded border bg-white p-2 shadow">
       <div>Portfolio Value: {formatCurrency(dataPoint.portfolioValue)}</div>
       <div>Total Invested: {formatCurrency(dataPoint.totalInvested)}</div>
+      <div>Profits: {formatCurrency(profits)}</div>
       <div>Bitcoin Price: {formatCurrency(dataPoint.btcPrice)}</div>
     </div>
   );

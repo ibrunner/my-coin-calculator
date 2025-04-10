@@ -179,9 +179,9 @@ const CalculatorForm = () => {
                 onValueChange={field.onChange}
               />
               <div className="mt-2 grid w-full grid-cols-3">
-                <span className="text-left text-sm">None</span>
-                <span className="text-center text-sm">This is fine.</span>
-                <span className="text-right text-sm">First Time?</span>
+                <span className="text-left text-sm">Boomer Stocks 👴</span>
+                <span className="text-center text-sm">This is fine. ☕ 🔥</span>
+                <span className="text-right text-sm">First Time? 😏</span>
               </div>
             </FormItem>
           )}
