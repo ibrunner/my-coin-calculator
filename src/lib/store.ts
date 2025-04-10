@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { getScenarioValues } from './scenarios';
 import { DurationStep, durationSteps, FormData, WhatIfStep } from './types';
 
-const DEFAULT_FORM_DATA: FormData = {
+export const DEFAULT_FORM_DATA: FormData = {
   initialInvestment: 1000,
   regularInvestment: 100,
   period: 'monthly',
