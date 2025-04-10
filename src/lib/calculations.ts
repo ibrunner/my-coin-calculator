@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import applyVolatility from './applyVolatility';
 import { FormData, TimeSeriesPoint } from './types';
-
 dayjs.extend(isSameOrBefore);
 
 interface GenerateWeeklyDataPointsParams
@@ -17,6 +17,7 @@ export const generateWeeklyDataPoints = ({
   durationMonths,
   priceTarget,
   btcPrice,
+  volatility,
 }: GenerateWeeklyDataPointsParams): TimeSeriesPoint[] => {
   const currentDate = dayjs();
 
@@ -61,6 +62,7 @@ export const generateWeeklyDataPoints = ({
         weekIndex: dataPoints.length,
         priceTarget,
         btcPrice,
+        volatility,
       });
 
       const prevDataPoint = dataPoints[dataPoints.length - 1];
@@ -95,14 +97,21 @@ const getBtcPrice = ({
   weekIndex,
   priceTarget,
   btcPrice,
+  volatility,
 }: {
   numWeeks: number;
   weekIndex: number;
   priceTarget: number;
   btcPrice: number;
+  volatility: number;
 }) => {
   if (numWeeks === 0) return btcPrice;
   const delta = priceTarget - btcPrice;
   const price = btcPrice + (delta * weekIndex) / numWeeks;
-  return price;
+  const priceWithVolatility = applyVolatility(
+    price,
+    (weekIndex + 1) / numWeeks,
+    volatility
+  );
+  return priceWithVolatility;
 };
