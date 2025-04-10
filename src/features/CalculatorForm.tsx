@@ -16,9 +16,9 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import useFormStore from '@/lib/store';
-import { FormData, periods } from '@/lib/types';
+import { durationSteps, FormData, periods } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 const calculatorFormSchema = z.object({
@@ -64,6 +64,15 @@ const CalculatorForm = () => {
       isUpdatingFromStore.current = false;
     }
   }, [formData, form]);
+
+  const durationLabel = useMemo(() => {
+    const durationMonths = durationSteps[formData.durationMonthsSlider];
+    if (durationMonths <= 24) {
+      return `${durationMonths} months`;
+    } else {
+      return `${durationMonths / 12} years`;
+    }
+  }, [formData.durationMonthsSlider]);
 
   return (
     <Form {...form}>
@@ -147,7 +156,7 @@ const CalculatorForm = () => {
           name="durationMonthsSlider"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration</FormLabel>
+              <FormLabel>Duration - {durationLabel}</FormLabel>
               <Slider
                 defaultValue={[3]}
                 max={6}

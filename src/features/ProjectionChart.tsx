@@ -25,14 +25,13 @@ const ProjectionChart = () => {
 
   // Calculate min and max BTC price for the Y-axis domain
   const btcPrices = timeSeriesData.map((d) => d.btcPrice);
-  const minBtcPrice = Math.min(...btcPrices);
-  const maxBtcPrice = Math.max(...btcPrices);
-  // Add 5% padding to the range
-  const btcPriceRange = maxBtcPrice - minBtcPrice;
-  const btcPriceDomain = [
-    minBtcPrice - btcPriceRange * 0.05,
-    maxBtcPrice + btcPriceRange * 0.05,
-  ];
+  const startBtcPrice = btcPrices[0];
+  const endBtcPrice = btcPrices[btcPrices.length - 1];
+  const minBtcPrice = Math.min(startBtcPrice, endBtcPrice);
+  const maxBtcPrice = Math.max(startBtcPrice, endBtcPrice);
+  // Add 50% padding to the range
+  // const btcPriceRange = Math.abs(startBtcPrice - endBtcPrice);
+  const btcPriceDomain = [minBtcPrice * 0.5, maxBtcPrice * 1.5];
 
   return (
     <div className="mb-2 h-[300px] w-full md:h-[500px]">

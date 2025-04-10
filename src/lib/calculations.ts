@@ -106,6 +106,12 @@ const getBtcPrice = ({
   volatility: number;
 }) => {
   if (numWeeks === 0) return btcPrice;
+
+  // If we're at the last week, return exactly the target price
+  if (weekIndex === numWeeks) {
+    return priceTarget;
+  }
+
   const delta = priceTarget - btcPrice;
   const price = btcPrice + (delta * weekIndex) / numWeeks;
   const priceWithVolatility = applyVolatility(

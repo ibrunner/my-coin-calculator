@@ -8,11 +8,11 @@ const applyVolatility = (
   const secondaryWaveAmplitude = volatilityLevel * 0.02;
   const secondaryWaveFrequency = 20;
 
-  // Phase shift based on volatility - at max volatility it's PI (starts with downswing)
-  const phaseShift = (volatilityLevel / 4) * Math.PI;
+  // Phase shift based on volatility level
+  const phaseShift = Math.PI / 2; // Constant phase shift to ensure consistent midpoint behavior
 
-  // Initial dip that scales with volatility
-  const initialDip = -Math.exp(-progressRatio * 8) * volatilityLevel * 0.05;
+  // Dampening factor that goes to zero at start and end
+  const dampening = Math.sin(progressRatio * Math.PI);
 
   // Primary wave: medium frequency, amplitude scales with volatility level
   const primaryWave =
@@ -24,7 +24,10 @@ const applyVolatility = (
     Math.sin(progressRatio * Math.PI * secondaryWaveFrequency + phaseShift) *
     secondaryWaveAmplitude;
 
-  return basePrice * (1 + primaryWave + secondaryWave + initialDip);
+  // Apply dampening to ensure we return to base price at start and end
+  const volatilityEffect = (primaryWave + secondaryWave) * dampening;
+
+  return basePrice * (1 + volatilityEffect);
 };
 
 export default applyVolatility;
