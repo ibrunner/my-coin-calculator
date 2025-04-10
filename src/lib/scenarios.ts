@@ -28,7 +28,7 @@ export const getScenarioValues = (
         ...DEFAULT_FORM_DATA,
         whatIf: scenario,
         priceTarget: Math.floor(btcPrice * 2),
-        volatility: 4,
+        volatility: 3,
         durationMonthsSlider: 6,
       };
     case 4: // Moon
