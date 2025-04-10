@@ -180,7 +180,7 @@ const CalculatorForm = () => {
               />
               <div className="mt-2 grid w-full grid-cols-3">
                 <span className="text-left text-sm">None</span>
-                <span className="text-center text-sm">Medium</span>
+                <span className="text-center text-sm">This is fine.</span>
                 <span className="text-right text-sm">First Time?</span>
               </div>
             </FormItem>

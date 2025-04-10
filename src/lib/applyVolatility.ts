@@ -3,8 +3,8 @@ const applyVolatility = (
   progressRatio: number, // 0-1 time position
   volatilityLevel: number // 0-4 from form
 ): number => {
-  const primaryWaveAmplitude = volatilityLevel * 0.05;
-  const primaryWaveFrequency = 8;
+  const primaryWaveAmplitude = volatilityLevel * 0.1;
+  const primaryWaveFrequency = 4;
   const secondaryWaveAmplitude = volatilityLevel * 0.02;
   const secondaryWaveFrequency = 20;
 

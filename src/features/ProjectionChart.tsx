@@ -4,8 +4,10 @@ import { formatCurrency } from '@/lib/utils';
 import dayjs from 'dayjs';
 import {
   Area,
-  AreaChart,
   CartesianGrid,
+  ComposedChart,
+  Legend,
+  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -21,20 +23,44 @@ const ProjectionChart = () => {
 
   const { timeSeriesData } = calculatedPortfolioValue;
 
+  // Calculate min and max BTC price for the Y-axis domain
+  const btcPrices = timeSeriesData.map((d) => d.btcPrice);
+  const minBtcPrice = Math.min(...btcPrices);
+  const maxBtcPrice = Math.max(...btcPrices);
+  // Add 5% padding to the range
+  const btcPriceRange = maxBtcPrice - minBtcPrice;
+  const btcPriceDomain = [
+    minBtcPrice - btcPriceRange * 0.05,
+    maxBtcPrice + btcPriceRange * 0.05,
+  ];
+
   return (
     <div className="mb-2 h-[300px] w-full md:h-[500px]">
       <div className="text-secondary bg-secondary flex h-full w-full items-center justify-center">
         <ResponsiveContainer width="90%" height="80%">
-          <AreaChart
+          <ComposedChart
             data={timeSeriesData}
-            margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           >
             <XAxis
               dataKey="date"
               tickFormatter={(date) => formatXAxisDate(date, timeSeriesData)}
               interval="preserveStartEnd"
             />
-            <YAxis dataKey="portfolioValue" />
+            <YAxis
+              yAxisId="left"
+              dataKey="portfolioValue"
+              orientation="left"
+              stroke="#8884d8"
+            />
+            <YAxis
+              yAxisId="right"
+              dataKey="btcPrice"
+              orientation="right"
+              stroke="#82ca9d"
+              domain={btcPriceDomain}
+              tickFormatter={(value: number) => formatCurrency(value) || '$0'}
+            />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip
               content={({ active, payload }) => {
@@ -44,13 +70,25 @@ const ProjectionChart = () => {
                 return <CustomTooltip dataPoint={dataPoint} />;
               }}
             />
+            <Legend wrapperStyle={{ paddingTop: '20px' }} />
             <Area
               type="monotone"
               dataKey="portfolioValue"
               stroke="#8884d8"
               fill="#8884d8"
+              yAxisId="left"
+              name="Portfolio Value"
             />
-          </AreaChart>
+            <Line
+              type="monotone"
+              dataKey="btcPrice"
+              stroke="#82ca9d"
+              yAxisId="right"
+              name="Bitcoin Price"
+              dot={false}
+              strokeWidth={2}
+            />
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
     </div>
@@ -64,6 +102,7 @@ const CustomTooltip = ({ dataPoint }: { dataPoint: TimeSeriesPoint }) => {
     <div className="rounded border bg-white p-2 shadow">
       <div>Portfolio Value: {formatCurrency(dataPoint.portfolioValue)}</div>
       <div>Total Invested: {formatCurrency(dataPoint.totalInvested)}</div>
+      <div>Bitcoin Price: {formatCurrency(dataPoint.btcPrice)}</div>
     </div>
   );
 };
