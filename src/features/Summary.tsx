@@ -3,9 +3,7 @@ import useFormStore from '../lib/store';
 import { PeriodStep } from '../lib/types';
 import { formatCurrency } from '../lib/utils';
 const periodHash: Record<PeriodStep, string> = {
-  // daily: 'daily',
   weekly: 'weekly',
-  // '2xMonthly': '2x monthly',
   monthly: 'monthly',
 } as const;
 
@@ -16,21 +14,34 @@ const Summary = () => {
     result?.calculatedPortfolioValue || {};
   const { regularInvestment, period, whatIf } = formData;
 
+  // Calculated values
   const timeSeriesData = result?.calculatedPortfolioValue?.timeSeriesData || [];
   const averageCostPerBtc =
     timeSeriesData[timeSeriesData.length - 1].averageCostPerBtc;
   const initalAverageCostPerBtc = timeSeriesData[0].averageCostPerBtc;
-
+  const totalBtcAssets =
+    timeSeriesData[timeSeriesData.length - 1].totalBtcAssets;
+  // Formatted values
   const totalInvestmetFormatted = formatCurrency(totalInvestment);
   const estimatedValueFormatted = formatCurrency(estimatedValue);
   const profitFormatted = formatCurrency(profit, 0);
   const regularInvestmentFormatted = formatCurrency(regularInvestment, 0);
-
+  const totalBtcAssetsFormatted = totalBtcAssets.toFixed(3);
   const averageCostPerBtcFormatted = formatCurrency(averageCostPerBtc, 0);
   const initalAverageCostPerBtcFormatted = formatCurrency(
     initalAverageCostPerBtc,
     0
   );
+  // Crab values
+  const topBtcPriceWeek = timeSeriesData.reduce((maxWeek, currentWeek) => {
+    return currentWeek.btcPrice > maxWeek.btcPrice ? currentWeek : maxWeek;
+  }, timeSeriesData[0]);
+  const investmentAtTopBtcPrice =
+    timeSeriesData[timeSeriesData.length - 1].totalInvested /
+    topBtcPriceWeek.btcPrice;
+  const investmentAtTopBtcPriceFormatted = investmentAtTopBtcPrice.toFixed(3);
+  const crabDifference = (totalBtcAssets / investmentAtTopBtcPrice - 1) * 100;
+  const crabDifferenceFormatted = Math.floor(crabDifference);
 
   return (
     <>
@@ -64,8 +75,10 @@ const Summary = () => {
       ) : null}
       {whatIf === 2 && profitFormatted ? (
         <div className="bg-secondary rounded-lg p-4 shadow-md">
-          Crab - even with years of sideways movement, you've accumulated x BTC.
-          If you bought at the high in this period, it would be worth $y
+          Crab - even with years of sideways movement, you've accumulated{' '}
+          {totalBtcAssetsFormatted} BTC. If you bought at the top in this
+          period, you'd only have {investmentAtTopBtcPriceFormatted} BTC. A{' '}
+          {crabDifferenceFormatted}% difference!
         </div>
       ) : null}
       {whatIf === 3 && profitFormatted ? (
