@@ -2,7 +2,6 @@ import usePortfolioCalcuations from '@/hooks/usePortfolioCalcuations';
 import useFormStore from '../lib/store';
 import { PeriodStep } from '../lib/types';
 import { formatCurrency } from '../lib/utils';
-
 const periodHash: Record<PeriodStep, string> = {
   // daily: 'daily',
   weekly: 'weekly',
@@ -17,10 +16,21 @@ const Summary = () => {
     result?.calculatedPortfolioValue || {};
   const { regularInvestment, period, whatIf } = formData;
 
+  const timeSeriesData = result?.calculatedPortfolioValue?.timeSeriesData || [];
+  const averageCostPerBtc =
+    timeSeriesData[timeSeriesData.length - 1].averageCostPerBtc;
+  const initalAverageCostPerBtc = timeSeriesData[0].averageCostPerBtc;
+
   const totalInvestmetFormatted = formatCurrency(totalInvestment);
   const estimatedValueFormatted = formatCurrency(estimatedValue);
   const profitFormatted = formatCurrency(profit, 0);
   const regularInvestmentFormatted = formatCurrency(regularInvestment, 0);
+
+  const averageCostPerBtcFormatted = formatCurrency(averageCostPerBtc, 0);
+  const initalAverageCostPerBtcFormatted = formatCurrency(
+    initalAverageCostPerBtc,
+    0
+  );
 
   return (
     <>
@@ -48,7 +58,8 @@ const Summary = () => {
       {whatIf === 1 && profitFormatted ? (
         <div className="bg-secondary rounded-lg p-4 shadow-md">
           Bear - despite long term downward movement, your average cost has
-          lowered from x to y. Consider it a sale, and buy more! 🫠
+          lowered from {initalAverageCostPerBtcFormatted} to{' '}
+          {averageCostPerBtcFormatted}. Consider it a sale, and buy more! 🫠
         </div>
       ) : null}
       {whatIf === 2 && profitFormatted ? (

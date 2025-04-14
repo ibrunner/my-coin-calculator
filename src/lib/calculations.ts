@@ -55,6 +55,7 @@ export const generateWeeklyDataPoints = ({
         btcPurchased: initialBtcPurchased,
         isRegularPurchase: false,
         totalBtcAssets: initialBtcPurchased,
+        averageCostPerBtc: btcPrice,
       });
     } else {
       const bitcoinPrice = getBtcPrice({
@@ -69,6 +70,11 @@ export const generateWeeklyDataPoints = ({
       const newInvestment = isRegularPurchase ? regularInvestment : 0;
       const newBtcPurchased = newInvestment / bitcoinPrice;
 
+      const averageCostPerBtc =
+        (prevDataPoint.averageCostPerBtc * prevDataPoint.totalBtcAssets +
+          newInvestment) /
+        (prevDataPoint.totalBtcAssets + newBtcPurchased);
+
       dataPoints.push({
         date: currentIterationDate.toDate(),
         btcPrice: bitcoinPrice,
@@ -78,6 +84,7 @@ export const generateWeeklyDataPoints = ({
         btcPurchased: newBtcPurchased,
         isRegularPurchase,
         totalBtcAssets: prevDataPoint.totalBtcAssets + newBtcPurchased,
+        averageCostPerBtc,
       });
     }
 

@@ -148,4 +148,32 @@ describe('generateWeeklyDataPoints', () => {
     const totalInvested = result[result.length - 1].totalInvested;
     expect(totalInvested).toBe(6000); // $100 * 60 months = $6000
   });
+
+  it('should calculate average cost per BTC correctly', () => {
+    const result = generateWeeklyDataPoints({
+      initialInvestment: 1000,
+      regularInvestment: 100,
+      period: 'weekly',
+      durationMonths: 1,
+      priceTarget: 50000, // Same as initial price for easier testing
+      btcPrice: 50000,
+      volatility: 0,
+      whatIf: 0,
+    });
+
+    // For initial investment of $1000 at $50000/BTC:
+    // - BTC purchased = 0.02 BTC
+    // - Average cost = $50000/BTC
+    expect(result[0].totalBtcAssets).toBe(0.02);
+    expect(result[0].averageCostPerBtc).toBe(50000);
+
+    // For second week with $100 investment at $50000/BTC:
+    // - Additional BTC = 0.002 BTC
+    // - Total BTC = 0.022 BTC
+    // - New average cost = ($50000 * 0.02 + $100) / 0.022
+    const secondWeek = result[1];
+    expect(secondWeek.totalBtcAssets).toBe(0.022);
+    const expectedAverageCost = (50000 * 0.02 + 100) / 0.022;
+    expect(secondWeek.averageCostPerBtc).toBeCloseTo(expectedAverageCost, 2);
+  });
 });

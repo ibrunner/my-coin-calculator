@@ -30,4 +30,5 @@ export type TimeSeriesPoint = {
   btcPurchased: number;
   isRegularPurchase: boolean;
   totalBtcAssets: number;
+  averageCostPerBtc: number;
 };
