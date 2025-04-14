@@ -17,15 +17,10 @@ import {
 
 const ProjectionChart = () => {
   const { calculatedPortfolioValue } = usePortfolioCalcuations();
+  const timeSeriesData = calculatedPortfolioValue?.timeSeriesData || [];
 
-  if (!calculatedPortfolioValue) {
-    return null;
-  }
-
-  const { timeSeriesData } = calculatedPortfolioValue;
-
-  // Calculate min and max BTC price for the Y-axis domain
   const btcPriceDomain = useMemo(() => {
+    if (!timeSeriesData.length) return [0, 0];
     const btcPrices = timeSeriesData.map((d) => d.btcPrice);
     const startBtcPrice = btcPrices[0];
     const endBtcPrice = btcPrices[btcPrices.length - 1];
@@ -37,6 +32,10 @@ const ProjectionChart = () => {
   const memoizedFormatXAxisDate = useMemo(() => {
     return (date: Date) => formatXAxisDate(date, timeSeriesData);
   }, [timeSeriesData]);
+
+  if (!calculatedPortfolioValue) {
+    return null;
+  }
 
   return (
     <div className="mb-2 h-[300px] w-full md:h-[500px]">

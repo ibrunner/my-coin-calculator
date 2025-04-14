@@ -1,7 +1,7 @@
 import usePortfolioCalcuations from '@/hooks/usePortfolioCalcuations';
 import { generateWeeklyDataPoints } from '../lib/calculations';
 import useFormStore from '../lib/store';
-import { FormData, PeriodStep, TimeSeriesPoint } from '../lib/types';
+import { FormData, PeriodStep, TimeSeriesPoint, scenarios } from '../lib/types';
 import { formatBtcAmount, formatCurrency } from '../lib/utils';
 
 const periodHash: Record<PeriodStep, string> = {
@@ -120,7 +120,7 @@ const BearSummary = ({
   );
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      🐻 Bear Market - despite long term downward movement, your average cost
+      🐻 {scenarios[1]} - despite long term downward movement, your average cost
       has lowered from {initalAverageCostPerBtcFormatted} to{' '}
       {averageCostPerBtcFormatted}. Consider it a sale, and buy more! 🫠
     </div>
@@ -143,9 +143,9 @@ const CrabSummary = ({ timeSeriesData }: SummaryProps) => {
 
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      🦀 Crabbin' - even with years of sideways movement, you've accumulated{' '}
-      {totalBtcAssetsFormatted} BTC. If you bought at the top in this period,
-      you'd only have {investmentAtTopBtcPriceFormatted} BTC. A{' '}
+      🦀 {scenarios[2]} - even with years of sideways movement, you've
+      accumulated {totalBtcAssetsFormatted} BTC. If you bought at the top in
+      this period, you'd only have {investmentAtTopBtcPriceFormatted} BTC. A{' '}
       {crabDifferenceFormatted}% difference!
     </div>
   );
@@ -162,7 +162,7 @@ const HodlSummary = ({ timeSeriesData }: SummaryProps) => {
 
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      💎🙌 HODL - you've weathered the storm and are now sitting on{' '}
+      💎🙌 {scenarios[3]} - you've weathered the storm and are now sitting on{' '}
       {totalBtcAssetsFormatted} BTC. If you sold at the high you would only have
       profited {profitAtTopBtcPriceFormatted} and you'd have zero BTC.
     </div>
@@ -197,7 +197,7 @@ const MoonSummary = ({
   const fomoBtcAssetsFormatted = fomoBtcAssets.toFixed(3);
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      🚀 Moon - By patiently buying, you've accumulated{' '}
+      🚀 {scenarios[4]} - By patiently buying, you've accumulated{' '}
       {totalBtcAssetsFormatted} btc. If you had saved your cash and FOMO'd three
       years later, you'd only have {fomoBtcAssetsFormatted} BTC
     </div>

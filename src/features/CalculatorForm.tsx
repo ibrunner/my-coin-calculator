@@ -127,9 +127,7 @@ const CalculatorForm = () => {
                 <SelectValue placeholder="Period" />
               </SelectTrigger>
               <SelectContent>
-                {/* <SelectItem value="daily">Daily</SelectItem> */}
                 <SelectItem value="weekly">Weekly</SelectItem>
-                {/* <SelectItem value="2xMonthly">2x Monthly</SelectItem> */}
                 <SelectItem value="monthly">Monthly</SelectItem>
               </SelectContent>
             </Select>
@@ -231,23 +229,23 @@ const CalculatorForm = () => {
               <div className="relative mt-2 h-6 w-full px-2">
                 <div className="absolute left-0 -translate-x-0 transform text-left text-sm">
                   📈 <br />
-                  Custom
+                  {scenarios[0]}
                 </div>
                 <div className="absolute left-[calc(25%+4px)] -translate-x-1/2 transform text-center text-sm">
                   🐻 <br />
-                  Bear Market
+                  {scenarios[1]}
                 </div>
                 <div className="absolute left-1/2 -translate-x-1/2 transform text-center text-sm">
                   🦀 <br />
-                  Crabbin'
+                  {scenarios[2]}
                 </div>
                 <div className="absolute left-[calc(75%-4px)] -translate-x-1/2 transform text-center text-sm">
                   💎🙌 <br />
-                  HODL
+                  {scenarios[3]}
                 </div>
                 <div className="absolute right-0 translate-x-0 transform text-right text-sm">
                   🚀 <br />
-                  Moon
+                  {scenarios[4]}
                 </div>
               </div>
             </FormItem>
