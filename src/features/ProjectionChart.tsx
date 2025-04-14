@@ -2,6 +2,7 @@ import usePortfolioCalcuations from '@/hooks/usePortfolioCalcuations';
 import { TimeSeriesPoint } from '@/lib/types';
 import { formatCurrency } from '@/lib/utils';
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
 import {
   Area,
   CartesianGrid,
@@ -24,14 +25,18 @@ const ProjectionChart = () => {
   const { timeSeriesData } = calculatedPortfolioValue;
 
   // Calculate min and max BTC price for the Y-axis domain
-  const btcPrices = timeSeriesData.map((d) => d.btcPrice);
-  const startBtcPrice = btcPrices[0];
-  const endBtcPrice = btcPrices[btcPrices.length - 1];
-  const minBtcPrice = Math.min(startBtcPrice, endBtcPrice);
-  const maxBtcPrice = Math.max(startBtcPrice, endBtcPrice);
-  // Add 50% padding to the range
-  // const btcPriceRange = Math.abs(startBtcPrice - endBtcPrice);
-  const btcPriceDomain = [minBtcPrice * 0.5, maxBtcPrice * 1.5];
+  const btcPriceDomain = useMemo(() => {
+    const btcPrices = timeSeriesData.map((d) => d.btcPrice);
+    const startBtcPrice = btcPrices[0];
+    const endBtcPrice = btcPrices[btcPrices.length - 1];
+    const minBtcPrice = Math.min(startBtcPrice, endBtcPrice);
+    const maxBtcPrice = Math.max(startBtcPrice, endBtcPrice);
+    return [minBtcPrice * 0.5, maxBtcPrice * 1.5];
+  }, [timeSeriesData]);
+
+  const memoizedFormatXAxisDate = useMemo(() => {
+    return (date: Date) => formatXAxisDate(date, timeSeriesData);
+  }, [timeSeriesData]);
 
   return (
     <div className="mb-2 h-[300px] w-full md:h-[500px]">
@@ -43,7 +48,7 @@ const ProjectionChart = () => {
           >
             <XAxis
               dataKey="date"
-              tickFormatter={(date) => formatXAxisDate(date, timeSeriesData)}
+              tickFormatter={memoizedFormatXAxisDate}
               interval="preserveStartEnd"
             />
             <YAxis
@@ -106,7 +111,10 @@ const ProjectionChart = () => {
 export default ProjectionChart;
 
 const CustomTooltip = ({ dataPoint }: { dataPoint: TimeSeriesPoint }) => {
-  const profits = dataPoint.portfolioValue - dataPoint.totalInvested;
+  const profits = useMemo(
+    () => dataPoint.portfolioValue - dataPoint.totalInvested,
+    [dataPoint]
+  );
   return (
     <div className="rounded border bg-white p-2 shadow">
       <div>Portfolio Value: {formatCurrency(dataPoint.portfolioValue)}</div>
