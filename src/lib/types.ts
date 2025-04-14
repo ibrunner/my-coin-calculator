@@ -12,6 +12,7 @@ export type PeriodStep = (typeof periods)[number];
 
 export const scenarios = ['Custom', 'Bear', 'Crab', 'HODL', 'Moon'] as const;
 export type ScenarioStep = (typeof scenarios)[number];
+
 export type FormData = {
   initialInvestment: number;
   regularInvestment: number;
