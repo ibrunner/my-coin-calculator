@@ -15,12 +15,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import useBtcPrice from '@/hooks/useBtcPrice';
 import useFormStore from '@/lib/store';
-import { FormData, periods } from '@/lib/types';
+import { durationSteps, FormData, periods, scenarios } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
 const calculatorFormSchema = z.object({
   initialInvestment: z.number(),
   regularInvestment: z.number().min(1, {
@@ -36,6 +38,7 @@ const calculatorFormSchema = z.object({
 const CalculatorForm = () => {
   const { formData, updateFormData } = useFormStore();
   const isUpdatingFromStore = useRef(false);
+  const { data: btcPrice } = useBtcPrice();
 
   const form = useForm<z.infer<typeof calculatorFormSchema>>({
     resolver: zodResolver(calculatorFormSchema),
@@ -48,13 +51,13 @@ const CalculatorForm = () => {
     const subscription = form.watch((value, { type }) => {
       // Only update store when changes are from user input, not from store sync
       if (!isUpdatingFromStore.current && type === 'change') {
-        updateFormData(value as FormData);
+        updateFormData(value as FormData, btcPrice);
       }
     });
 
     // Cleanup subscription on unmount
     return () => subscription.unsubscribe();
-  }, [form, updateFormData]);
+  }, [form, updateFormData, btcPrice]);
 
   // Sync from store to form when store changes externally
   useEffect(() => {
@@ -64,6 +67,15 @@ const CalculatorForm = () => {
       isUpdatingFromStore.current = false;
     }
   }, [formData, form]);
+
+  const durationLabel = useMemo(() => {
+    const durationMonths = durationSteps[formData.durationMonthsSlider];
+    if (durationMonths <= 24) {
+      return `${durationMonths} months`;
+    } else {
+      return `${durationMonths / 12} years`;
+    }
+  }, [formData.durationMonthsSlider]);
 
   return (
     <Form {...form}>
@@ -115,9 +127,9 @@ const CalculatorForm = () => {
                 <SelectValue placeholder="Period" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily">Daily</SelectItem>
+                {/* <SelectItem value="daily">Daily</SelectItem> */}
                 <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="2xMonthly">2x Monthly</SelectItem>
+                {/* <SelectItem value="2xMonthly">2x Monthly</SelectItem> */}
                 <SelectItem value="monthly">Monthly</SelectItem>
               </SelectContent>
             </Select>
@@ -147,7 +159,7 @@ const CalculatorForm = () => {
           name="durationMonthsSlider"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Duration</FormLabel>
+              <FormLabel>Duration - {durationLabel}</FormLabel>
               <Slider
                 defaultValue={[3]}
                 max={6}
@@ -176,12 +188,26 @@ const CalculatorForm = () => {
                 max={4}
                 step={1}
                 value={[field.value]}
-                onValueChange={field.onChange}
+                onValueChange={(values) => {
+                  field.onChange(values[0]);
+                }}
               />
               <div className="mt-2 grid w-full grid-cols-3">
-                <span className="text-left text-sm">None</span>
-                <span className="text-center text-sm">Medium</span>
-                <span className="text-right text-sm">First Time?</span>
+                <div className="text-left text-sm">
+                  👴
+                  <br />
+                  Boomer Stocks
+                </div>
+                <div className="text-center text-sm">
+                  ☕ 🔥
+                  <br />
+                  This is fine.
+                </div>
+                <div className="text-right text-sm">
+                  😏
+                  <br />
+                  First Time?
+                </div>
               </div>
             </FormItem>
           )}
@@ -192,29 +218,36 @@ const CalculatorForm = () => {
           name="whatIf"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>What If?</FormLabel>
+              <FormLabel>What If? - {scenarios[field.value]}</FormLabel>
               <Slider
                 defaultValue={[0]}
                 max={4}
                 step={1}
                 value={[field.value]}
-                onValueChange={field.onChange}
+                onValueChange={(values) => {
+                  field.onChange(values[0]);
+                }}
               />
               <div className="relative mt-2 h-6 w-full px-2">
-                <div className="absolute left-0 -translate-x-0 transform text-sm">
-                  📈
+                <div className="absolute left-0 -translate-x-0 transform text-left text-sm">
+                  📈 <br />
+                  Custom
                 </div>
-                <div className="absolute left-[calc(25%+4px)] -translate-x-1/2 transform text-sm">
-                  🐻
+                <div className="absolute left-[calc(25%+4px)] -translate-x-1/2 transform text-center text-sm">
+                  🐻 <br />
+                  Bear Market
                 </div>
-                <div className="absolute left-1/2 -translate-x-1/2 transform text-sm">
-                  🦀
+                <div className="absolute left-1/2 -translate-x-1/2 transform text-center text-sm">
+                  🦀 <br />
+                  Crabbin'
                 </div>
-                <div className="absolute left-[calc(75%-4px)] -translate-x-1/2 transform text-sm">
-                  💎
+                <div className="absolute left-[calc(75%-4px)] -translate-x-1/2 transform text-center text-sm">
+                  💎🙌 <br />
+                  HODL
                 </div>
-                <div className="absolute right-0 translate-x-0 transform text-sm">
-                  🚀
+                <div className="absolute right-0 translate-x-0 transform text-right text-sm">
+                  🚀 <br />
+                  Moon
                 </div>
               </div>
             </FormItem>

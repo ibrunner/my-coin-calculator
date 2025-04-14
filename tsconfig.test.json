@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": false,
+    "noEmit": true
+  },
+  "include": ["src/**/__tests__/**/*"]
+}
