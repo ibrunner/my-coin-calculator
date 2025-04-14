@@ -14,3 +14,7 @@ export const formatCurrency = (value: number | undefined, decimals = 2) => {
       }).format(value)
     : null;
 };
+
+export const formatBtcAmount = (amount: number | undefined | null): string => {
+  return amount ? amount.toFixed(3) : '0.000';
+};

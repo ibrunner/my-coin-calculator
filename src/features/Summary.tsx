@@ -2,11 +2,27 @@ import usePortfolioCalcuations from '@/hooks/usePortfolioCalcuations';
 import { generateWeeklyDataPoints } from '../lib/calculations';
 import useFormStore from '../lib/store';
 import { FormData, PeriodStep, TimeSeriesPoint } from '../lib/types';
-import { formatCurrency } from '../lib/utils';
+import { formatBtcAmount, formatCurrency } from '../lib/utils';
+
 const periodHash: Record<PeriodStep, string> = {
   weekly: 'weekly',
   monthly: 'monthly',
 } as const;
+
+type SummaryProps = {
+  timeSeriesData: TimeSeriesPoint[];
+  formData?: FormData;
+  profitFormatted?: string;
+  durationMonths?: number;
+};
+
+const findTopBtcPriceWeek = (
+  timeSeriesData: TimeSeriesPoint[]
+): TimeSeriesPoint => {
+  return timeSeriesData.reduce((maxWeek, currentWeek) => {
+    return currentWeek.btcPrice > maxWeek.btcPrice ? currentWeek : maxWeek;
+  }, timeSeriesData[0]);
+};
 
 const Summary = () => {
   const { durationMonths, formData } = useFormStore();
@@ -111,21 +127,17 @@ const BearSummary = ({
   );
 };
 
-const CrabSummary = ({
-  timeSeriesData,
-}: {
-  timeSeriesData: TimeSeriesPoint[];
-}) => {
+const CrabSummary = ({ timeSeriesData }: SummaryProps) => {
   const totalBtcAssets =
     timeSeriesData[timeSeriesData.length - 1]?.totalBtcAssets;
-  const totalBtcAssetsFormatted = totalBtcAssets && totalBtcAssets.toFixed(3);
-  const topBtcPriceWeek = timeSeriesData.reduce((maxWeek, currentWeek) => {
-    return currentWeek.btcPrice > maxWeek.btcPrice ? currentWeek : maxWeek;
-  }, timeSeriesData[0]);
+  const totalBtcAssetsFormatted = formatBtcAmount(totalBtcAssets);
+  const topBtcPriceWeek = findTopBtcPriceWeek(timeSeriesData);
   const investmentAtTopBtcPrice =
     timeSeriesData[timeSeriesData.length - 1].totalInvested /
     topBtcPriceWeek.btcPrice;
-  const investmentAtTopBtcPriceFormatted = investmentAtTopBtcPrice.toFixed(3);
+  const investmentAtTopBtcPriceFormatted = formatBtcAmount(
+    investmentAtTopBtcPrice
+  );
   const crabDifference = (totalBtcAssets / investmentAtTopBtcPrice - 1) * 100;
   const crabDifferenceFormatted = Math.floor(crabDifference);
 
@@ -139,17 +151,11 @@ const CrabSummary = ({
   );
 };
 
-const HodlSummary = ({
-  timeSeriesData,
-}: {
-  timeSeriesData: TimeSeriesPoint[];
-}) => {
-  const topBtcPriceWeek = timeSeriesData.reduce((maxWeek, currentWeek) => {
-    return currentWeek.btcPrice > maxWeek.btcPrice ? currentWeek : maxWeek;
-  }, timeSeriesData[0]);
+const HodlSummary = ({ timeSeriesData }: SummaryProps) => {
+  const topBtcPriceWeek = findTopBtcPriceWeek(timeSeriesData);
   const totalBtcAssets =
     timeSeriesData[timeSeriesData.length - 1]?.totalBtcAssets;
-  const totalBtcAssetsFormatted = totalBtcAssets && totalBtcAssets.toFixed(3);
+  const totalBtcAssetsFormatted = formatBtcAmount(totalBtcAssets);
   const profitAtTopBtcPrice =
     topBtcPriceWeek.portfolioValue - topBtcPriceWeek.totalInvested;
   const profitAtTopBtcPriceFormatted = formatCurrency(profitAtTopBtcPrice, 0);
