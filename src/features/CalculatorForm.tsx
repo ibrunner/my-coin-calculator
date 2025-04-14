@@ -193,9 +193,21 @@ const CalculatorForm = () => {
                 }}
               />
               <div className="mt-2 grid w-full grid-cols-3">
-                <span className="text-left text-sm">Boomer Stocks 👴</span>
-                <span className="text-center text-sm">This is fine. ☕ 🔥</span>
-                <span className="text-right text-sm">First Time? 😏</span>
+                <div className="text-left text-sm">
+                  👴
+                  <br />
+                  Boomer Stocks
+                </div>
+                <div className="text-center text-sm">
+                  ☕ 🔥
+                  <br />
+                  This is fine.
+                </div>
+                <div className="text-right text-sm">
+                  😏
+                  <br />
+                  First Time?
+                </div>
               </div>
             </FormItem>
           )}
@@ -217,20 +229,25 @@ const CalculatorForm = () => {
                 }}
               />
               <div className="relative mt-2 h-6 w-full px-2">
-                <div className="absolute left-0 -translate-x-0 transform text-sm">
-                  📈
+                <div className="absolute left-0 -translate-x-0 transform text-left text-sm">
+                  📈 <br />
+                  Custom
                 </div>
-                <div className="absolute left-[calc(25%+4px)] -translate-x-1/2 transform text-sm">
-                  🐻
+                <div className="absolute left-[calc(25%+4px)] -translate-x-1/2 transform text-center text-sm">
+                  🐻 <br />
+                  Bear Market
                 </div>
-                <div className="absolute left-1/2 -translate-x-1/2 transform text-sm">
-                  🦀
+                <div className="absolute left-1/2 -translate-x-1/2 transform text-center text-sm">
+                  🦀 <br />
+                  Crabbin'
                 </div>
-                <div className="absolute left-[calc(75%-4px)] -translate-x-1/2 transform text-sm">
-                  💎
+                <div className="absolute left-[calc(75%-4px)] -translate-x-1/2 transform text-center text-sm">
+                  💎🙌 <br />
+                  HODL
                 </div>
-                <div className="absolute right-0 translate-x-0 transform text-sm">
-                  🚀
+                <div className="absolute right-0 translate-x-0 transform text-right text-sm">
+                  🚀 <br />
+                  Moon
                 </div>
               </div>
             </FormItem>

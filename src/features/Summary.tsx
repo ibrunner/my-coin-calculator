@@ -120,9 +120,9 @@ const BearSummary = ({
   );
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      Bear - despite long term downward movement, your average cost has lowered
-      from {initalAverageCostPerBtcFormatted} to {averageCostPerBtcFormatted}.
-      Consider it a sale, and buy more! 🫠
+      🐻 Bear Market - despite long term downward movement, your average cost
+      has lowered from {initalAverageCostPerBtcFormatted} to{' '}
+      {averageCostPerBtcFormatted}. Consider it a sale, and buy more! 🫠
     </div>
   );
 };
@@ -143,7 +143,7 @@ const CrabSummary = ({ timeSeriesData }: SummaryProps) => {
 
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      Crab - even with years of sideways movement, you've accumulated{' '}
+      🦀 Crabbin' - even with years of sideways movement, you've accumulated{' '}
       {totalBtcAssetsFormatted} BTC. If you bought at the top in this period,
       you'd only have {investmentAtTopBtcPriceFormatted} BTC. A{' '}
       {crabDifferenceFormatted}% difference!
@@ -162,7 +162,7 @@ const HodlSummary = ({ timeSeriesData }: SummaryProps) => {
 
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      HODL - you've weathered the storm and are now sitting on{' '}
+      💎🙌 HODL - you've weathered the storm and are now sitting on{' '}
       {totalBtcAssetsFormatted} BTC. If you sold at the high you would only have
       profited {profitAtTopBtcPriceFormatted} and you'd have zero BTC.
     </div>
@@ -197,9 +197,9 @@ const MoonSummary = ({
   const fomoBtcAssetsFormatted = fomoBtcAssets.toFixed(3);
   return (
     <div className="bg-secondary rounded-lg p-4 shadow-md">
-      Moon - By patiently buying, you've accumulated {totalBtcAssetsFormatted}{' '}
-      btc. If you had saved your cash and FOMO'd three years later, you'd only
-      have {fomoBtcAssetsFormatted} BTC
+      🚀 Moon - By patiently buying, you've accumulated{' '}
+      {totalBtcAssetsFormatted} btc. If you had saved your cash and FOMO'd three
+      years later, you'd only have {fomoBtcAssetsFormatted} BTC
     </div>
   );
 };
