@@ -1,8 +1,6 @@
-# My Coin Calculator
-
 <div align="center">
-  <img src="src/assets/logo-small.png" alt="Calculator Coin" width="32" />
-  <h1>Coin Calculator</h1>
+  <img src="src/assets/logo-small.png" alt="Calculator Coin" width="128" />
+  <h1>My Coin Calculator</h1>
 </div>
 
 A modern cryptocurrency calculator built with React, TypeScript, and Vite.
