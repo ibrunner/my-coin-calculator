@@ -1,3 +1,12 @@
+# Coin Calculator
+
+<div align="center">
+  <img src="src/assets/logo-small.png" alt="Calculator Coin" width="32" />
+  <h1>Coin Calculator</h1>
+</div>
+
+A modern cryptocurrency calculator built with React, TypeScript, and Vite.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

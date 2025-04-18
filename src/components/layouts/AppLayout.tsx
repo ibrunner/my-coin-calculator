@@ -1,3 +1,4 @@
+import logo from '@/assets/logo-small.png';
 import BitcoinPrice from '@/features/BitcoinPrice';
 import CalculatorForm from '@/features/CalculatorForm';
 import Chart from '@/features/ProjectionChart';
@@ -9,7 +10,10 @@ const AppLayout = () => {
       {/* Header */}
       <header className="bg-secondary sticky top-0 z-10 w-full p-4 text-white shadow-md">
         <div className="flex items-center justify-between">
-          <h1>My Coin Calculator</h1>
+          <div className="flex items-center gap-4">
+            <img src={logo} alt="Calculator Coin" className="h-16 w-16" />
+            <h1 className="text-2xl font-bold">My Coin Calculator</h1>
+          </div>
           <BitcoinPrice />
         </div>
       </header>

@@ -39,7 +39,7 @@ const ProjectionChart = () => {
 
   return (
     <div className="mb-2 h-[300px] w-full md:h-[500px]">
-      <div className="text-secondary bg-secondary flex h-full w-full items-center justify-center">
+      <div className="text-secondary bg-secondary flex h-full w-full items-center justify-center rounded-lg p-4 shadow-md">
         <ResponsiveContainer width="90%" height="80%">
           <ComposedChart
             data={timeSeriesData}
@@ -82,7 +82,7 @@ const ProjectionChart = () => {
               yAxisId="left"
               name="Portfolio Value"
             />
-            <Area
+            {/* <Area
               type="monotone"
               dataKey={(data) => data.portfolioValue - data.totalInvested}
               stroke="#4CAF50"
@@ -90,7 +90,7 @@ const ProjectionChart = () => {
               fillOpacity={0.3}
               yAxisId="left"
               name="Profits"
-            />
+            /> */}
             <Line
               type="monotone"
               dataKey="btcPrice"
