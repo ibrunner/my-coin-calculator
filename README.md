@@ -1,4 +1,11 @@
-# MyCoinCalculator
+# My Coin Calculator
+
+<div align="center">
+  <img src="src/assets/logo-small.png" alt="Calculator Coin" width="32" />
+  <h1>Coin Calculator</h1>
+</div>
+
+A modern cryptocurrency calculator built with React, TypeScript, and Vite.
 
 A simple dollar-cost averaging (DCA) calculator for cryptocurrency investors and novices. This is the code behind [mycoincalculator.com](https://mycoincalculator.com).
 

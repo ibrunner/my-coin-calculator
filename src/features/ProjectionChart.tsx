@@ -15,6 +15,16 @@ import {
   YAxis,
 } from 'recharts';
 
+const formatYAxisValue = (value: number) => {
+  if (value >= 1000000) {
+    return `$${(value / 1000000).toFixed(1)}M`;
+  }
+  if (value >= 1000) {
+    return `$${(value / 1000).toFixed(1)}k`;
+  }
+  return `$${value}`;
+};
+
 const ProjectionChart = () => {
   const { calculatedPortfolioValue } = usePortfolioCalcuations();
   const timeSeriesData = calculatedPortfolioValue?.timeSeriesData || [];
@@ -39,7 +49,7 @@ const ProjectionChart = () => {
 
   return (
     <div className="mb-2 h-[300px] w-full md:h-[500px]">
-      <div className="text-secondary bg-secondary flex h-full w-full items-center justify-center">
+      <div className="text-secondary bg-secondary flex h-full w-full items-center justify-center rounded-lg p-4 shadow-md">
         <ResponsiveContainer width="90%" height="80%">
           <ComposedChart
             data={timeSeriesData}
@@ -48,13 +58,19 @@ const ProjectionChart = () => {
             <XAxis
               dataKey="date"
               tickFormatter={memoizedFormatXAxisDate}
-              interval="preserveStartEnd"
+              interval={timeSeriesData.length > 24 ? 12 : 0}
+              tickCount={
+                timeSeriesData.length > 24
+                  ? Math.ceil(timeSeriesData.length / 4)
+                  : undefined
+              }
             />
             <YAxis
               yAxisId="left"
               dataKey="portfolioValue"
               orientation="left"
               stroke="#8884d8"
+              tickFormatter={formatYAxisValue}
             />
             <YAxis
               yAxisId="right"
@@ -62,7 +78,7 @@ const ProjectionChart = () => {
               orientation="right"
               stroke="#82ca9d"
               domain={btcPriceDomain}
-              tickFormatter={(value: number) => formatCurrency(value) || '$0'}
+              tickFormatter={formatYAxisValue}
             />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip
@@ -82,7 +98,7 @@ const ProjectionChart = () => {
               yAxisId="left"
               name="Portfolio Value"
             />
-            <Area
+            {/* <Area
               type="monotone"
               dataKey={(data) => data.portfolioValue - data.totalInvested}
               stroke="#4CAF50"
@@ -90,7 +106,7 @@ const ProjectionChart = () => {
               fillOpacity={0.3}
               yAxisId="left"
               name="Profits"
-            />
+            /> */}
             <Line
               type="monotone"
               dataKey="btcPrice"
@@ -134,13 +150,16 @@ const formatXAxisDate = (date: Date, timeSeriesData: TimeSeriesPoint[]) => {
   if (monthsDiff <= 6) {
     // Monthly: "Jan", "Feb", etc.
     return dayjs(d).format('MMM');
-  } else if (monthsDiff <= 24) {
+  } else if (monthsDiff <= 18) {
     // Quarterly: "Q1 '23", etc.
     const quarter = Math.floor(d.getMonth() / 3) + 1;
     const year = d.getFullYear().toString().slice(-2);
     return `Q${quarter}'${year}`;
   } else {
-    // Yearly: "'23", "'24", etc.
-    return "'" + d.getFullYear().toString().slice(-2);
+    // Yearly: Only show for January
+    if (d.getMonth() === 0) {
+      return "'" + d.getFullYear().toString().slice(-2);
+    }
+    return '';
   }
 };

@@ -1,5 +1,7 @@
 @theme {
-  --color-primary: var(--color-sky-100);
+  /* --color-primary: var(--color-sky-100); */
+  --color-primary: var(--color-slate-300);
   --color-secondary: var(--color-slate-800);
-  --color-tertiary: var(--color-teal-900);
+  /* --color-tertiary: var(--color-teal-900); */
+  --color-tertiary: var(--color-slate-700);
 }
