@@ -15,6 +15,16 @@ import {
   YAxis,
 } from 'recharts';
 
+const formatYAxisValue = (value: number) => {
+  if (value >= 1000000) {
+    return `$${(value / 1000000).toFixed(1)}M`;
+  }
+  if (value >= 1000) {
+    return `$${(value / 1000).toFixed(1)}k`;
+  }
+  return `$${value}`;
+};
+
 const ProjectionChart = () => {
   const { calculatedPortfolioValue } = usePortfolioCalcuations();
   const timeSeriesData = calculatedPortfolioValue?.timeSeriesData || [];
@@ -48,13 +58,19 @@ const ProjectionChart = () => {
             <XAxis
               dataKey="date"
               tickFormatter={memoizedFormatXAxisDate}
-              interval="preserveStartEnd"
+              interval={timeSeriesData.length > 24 ? 12 : 0}
+              tickCount={
+                timeSeriesData.length > 24
+                  ? Math.ceil(timeSeriesData.length / 4)
+                  : undefined
+              }
             />
             <YAxis
               yAxisId="left"
               dataKey="portfolioValue"
               orientation="left"
               stroke="#8884d8"
+              tickFormatter={formatYAxisValue}
             />
             <YAxis
               yAxisId="right"
@@ -62,7 +78,7 @@ const ProjectionChart = () => {
               orientation="right"
               stroke="#82ca9d"
               domain={btcPriceDomain}
-              tickFormatter={(value: number) => formatCurrency(value) || '$0'}
+              tickFormatter={formatYAxisValue}
             />
             <CartesianGrid strokeDasharray="3 3" />
             <Tooltip
@@ -134,13 +150,16 @@ const formatXAxisDate = (date: Date, timeSeriesData: TimeSeriesPoint[]) => {
   if (monthsDiff <= 6) {
     // Monthly: "Jan", "Feb", etc.
     return dayjs(d).format('MMM');
-  } else if (monthsDiff <= 24) {
+  } else if (monthsDiff <= 18) {
     // Quarterly: "Q1 '23", etc.
     const quarter = Math.floor(d.getMonth() / 3) + 1;
     const year = d.getFullYear().toString().slice(-2);
     return `Q${quarter}'${year}`;
   } else {
-    // Yearly: "'23", "'24", etc.
-    return "'" + d.getFullYear().toString().slice(-2);
+    // Yearly: Only show for January
+    if (d.getMonth() === 0) {
+      return "'" + d.getFullYear().toString().slice(-2);
+    }
+    return '';
   }
 };
