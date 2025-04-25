@@ -20,7 +20,7 @@ const AppLayout = () => {
       {/* Main */}
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:gap-4">
-          <div className="md:w-5/10 mb-2 w-full md:mb-0">
+          <div className="md:w-5/10 mb-8 w-full md:mb-0">
             <CalculatorForm />
           </div>
           <div className="md:w-5/10 w-full">
